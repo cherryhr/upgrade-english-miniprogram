@@ -1,5 +1,7 @@
 name: Deploy WeChat Mini Program
 
+name: Deploy WeChat Mini Program
+
 on:
   push:
     branches:
@@ -27,13 +29,6 @@ jobs:
       - name: Upload to WeChat Mini Program
         env:
           WX_APPID: ${{ secrets.WX_APPID }}
-          env:
-  WX_APPID: ${{ secrets.WX_APPID }}
-  WX_SECRET: ${{ secrets.WX_SECRET }}WX_SECRET: ${{ secrets.WX_SECRET }}
-          env:
-  WX_APPID: ${{ secrets.WX_APPID }}
-  WX_SECRET: ${{ secrets.WX_SECRET }}
-  WX_PRIVATE_KEY: ${{ secrets.WX_PRIVATE_KEY }}
-
+          WX_SECRET: ${{ secrets.WX_SECRET }}
+          WX_PRIVATE_KEY: ${{ secrets.WX_PRIVATE_KEY }}
         run: node upload.js
-
