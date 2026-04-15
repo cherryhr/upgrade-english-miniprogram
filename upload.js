@@ -4,9 +4,11 @@
  */
 const ci = require('miniprogram-ci');
 const path = require('path');
+const fs = require('fs');
 
 const appid = process.env.WX_APPID;
 const secret = process.env.WX_SECRET;
+const privateKeyFromEnv = process.env.WX_PRIVATE_KEY;
 const projectPath = path.resolve(__dirname);
 const privateKeyPath = path.join(projectPath, 'private.key');
 
@@ -16,14 +18,23 @@ const version = process.env.GITHUB_RUN_NUMBER
 
 console.log('📦 UpGrade English - 微信小程序上传开始');
 console.log(`   AppID: ${appid || '❌ 未配置'}`);
-console.log(`   私钥文件: ${privateKeyPath} - ${require('fs').existsSync(privateKeyPath) ? '✅ 存在' : '⚠️ 不存在（将使用 Secret 模式）'}`);
+
+// 如果环境变量中有私钥内容，写入文件
+if (privateKeyFromEnv && !fs.existsSync(privateKeyPath)) {
+  fs.writeFileSync(privateKeyPath, privateKeyFromEnv);
+  console.log('   私钥文件: 从环境变量生成 ✅');
+} else if (fs.existsSync(privateKeyPath)) {
+  console.log('   私钥文件: 存在 ✅');
+} else {
+  console.log('   私钥文件: ⚠️ 不存在');
+}
 
 async function main() {
   const project = new ci.Project({
     appid,
     type: 'miniProgram',
     projectPath,
-    privateKeyPath: require('fs').existsSync(privateKeyPath) ? privateKeyPath : undefined,
+    privateKeyPath: fs.existsSync(privateKeyPath) ? privateKeyPath : undefined,
     ignores: [
       'node_modules/**',
       '.*',
