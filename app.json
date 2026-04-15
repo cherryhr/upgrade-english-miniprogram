@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/unit/index",
+    "pages/games/index",
+    "pages/checkin/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#1B4FD8",
+    "navigationBarTitleText": "UpGrade English",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0a1628",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#aaa",
+    "selectedColor": "#F5C518",
+    "backgroundColor": "#0a1628",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tab-home.png",
+        "selectedIconPath": "static/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/games/index",
+        "text": "游戏",
+        "iconPath": "static/tab-game.png",
+        "selectedIconPath": "static/tab-game-active.png"
+      },
+      {
+        "pagePath": "pages/checkin/index",
+        "text": "打卡",
+        "iconPath": "static/tab-checkin.png",
+        "selectedIconPath": "static/tab-checkin-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

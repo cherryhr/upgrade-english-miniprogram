@@ -1,0 +1,568 @@
+/* pages/unit/index.wxss */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%);
+  padding: 0 24rpx;
+}
+
+/* 导航栏 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.back-btn {
+  font-size: 30rpx;
+  color: #F5C518;
+  font-weight: 700;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: white;
+}
+
+.nav-spacer {
+  width: 80rpx;
+}
+
+/* 标签栏 */
+.tab-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12rpx;
+  margin-bottom: 30rpx;
+  flex-wrap: wrap;
+}
+
+.tab-item {
+  padding: 14rpx 28rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  background: #F5C518;
+  color: #1B4FD8;
+  border-color: #F5C518;
+}
+
+/* 内容区 */
+.content {
+  padding-bottom: 40rpx;
+}
+
+/* 词汇网格 */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.vocab-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 24rpx 10rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+  transition: transform 0.15s;
+}
+
+.vocab-card:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.15);
+}
+
+.vocab-emoji {
+  display: block;
+  font-size: 60rpx;
+  margin-bottom: 8rpx;
+}
+
+.vocab-en {
+  display: block;
+  font-size: 22rpx;
+  font-weight: 800;
+  color: #1B4FD8;
+}
+
+.vocab-zh {
+  display: block;
+  font-size: 20rpx;
+  color: #888;
+  margin-top: 2rpx;
+}
+
+/* 问答列表 */
+.qa-list {}
+
+.qa-card {
+  background: white;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+
+.qa-q, .qa-a {
+  padding: 20rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.qa-q {
+  background: #E3F2FD;
+}
+
+.qa-icon {
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+
+.qa-text-wrap {
+  flex: 1;
+}
+
+.qa-en {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1565C0;
+}
+
+.qa-zh {
+  display: block;
+  font-size: 22rpx;
+  color: #555;
+  margin-top: 2rpx;
+}
+
+.qa-speak {
+  font-size: 32rpx;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* 歌曲卡片 */
+.song-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  text-align: center;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
+}
+
+.song-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 16rpx;
+}
+
+.song-progress-bar {
+  height: 8rpx;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+.song-progress-fill {
+  height: 100%;
+  background: #F5C518;
+  border-radius: 4rpx;
+  transition: width 0.3s ease;
+}
+
+.song-current {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 8rpx;
+}
+
+.song-lyric {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 24rpx;
+}
+
+.song-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24rpx;
+}
+
+.song-btn {
+  font-size: 40rpx;
+  padding: 10rpx;
+}
+
+.song-play-btn {
+  background: #F5C518;
+  color: #1B4FD8;
+  padding: 16rpx 40rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+/* 歌词列表 */
+.lyrics-list {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.lyric-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+}
+
+.lyric-item:last-child { border-bottom: none; }
+
+.lyric-item.active {
+  background: rgba(245, 197, 24, 0.15);
+}
+
+.lyric-num {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.3);
+  min-width: 40rpx;
+  text-align: center;
+}
+
+.lyric-texts { flex: 1; }
+
+.lyric-en {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: white;
+}
+
+.lyric-zh {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2rpx;
+}
+
+/* 游戏网格 */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.game-card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.game-card:active { transform: scale(0.96); }
+
+.game-emoji { display: block; font-size: 64rpx; margin-bottom: 12rpx; }
+
+.game-name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4rpx;
+}
+
+.game-desc {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 游戏区域 */
+.game-area {
+  background: rgba(255,255,255,0.05);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.game-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: white;
+}
+
+.game-moves, .game-score {
+  font-size: 24rpx;
+  color: #F5C518;
+  font-weight: 700;
+}
+
+/* Memory Match */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  background: white;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg);
+  background: white;
+}
+
+.memory-card.matched {
+  background: #27AE60;
+}
+
+.card-front, .card-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-front {
+  background: white;
+  color: #333;
+  font-size: 40rpx;
+}
+
+.card-back {
+  background: white;
+  transform: rotateY(180deg);
+}
+
+.card-emoji {
+  display: block;
+  font-size: 52rpx;
+}
+
+.card-en {
+  display: block;
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #1B4FD8;
+}
+
+/* Quiz */
+.quiz-card {
+  background: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.quiz-q {
+  background: #E3F2FD;
+  padding: 28rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.quiz-icon { font-size: 56rpx; }
+
+.quiz-en {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #1565C0;
+  text-align: center;
+}
+
+.quiz-zh {
+  font-size: 24rpx;
+  color: #555;
+}
+
+.quiz-options {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.quiz-option {
+  background: #f5f5f5;
+  color: #333;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.quiz-option:active { transform: scale(0.98); }
+
+.quiz-option.correct {
+  background: #27AE60;
+  color: white;
+}
+
+.quiz-option.wrong {
+  background: #e74c3c;
+  color: white;
+}
+
+.quiz-option.disabled {
+  opacity: 0.5;
+}
+
+/* Spelling */
+.spelling-prompt {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.spelling-emoji { display: block; font-size: 80rpx; margin-bottom: 12rpx; }
+
+.spelling-zh {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1B4FD8;
+  margin-bottom: 8rpx;
+}
+
+.spelling-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.spelling-input-wrap {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.spelling-input {
+  flex: 1;
+  background: white;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.spelling-check-btn {
+  background: #1B4FD8;
+  color: white;
+  padding: 20rpx 32rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.spelling-result {
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #F5C518;
+  padding: 12rpx;
+}
+
+/* Bubble */
+.bubble-prompt {
+  background: white;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.bubble-task {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.bubble-word {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1B4FD8;
+}
+
+.bubble-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.bubble-item {
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+  color: white;
+  padding: 40rpx 20rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 800;
+  transition: transform 0.15s;
+}
+
+.bubble-item:active { transform: scale(0.95); }
+
+.bubble-item.correct { background: linear-gradient(135deg, #00b894, #27AE60); }
+.bubble-item.wrong { background: linear-gradient(135deg, #d63031, #e74c3c); }
+
+/* 游戏返回按钮 */
+.game-back {
+  text-align: center;
+  color: #F5C518;
+  font-size: 28rpx;
+  font-weight: 700;
+  padding: 20rpx;
+}

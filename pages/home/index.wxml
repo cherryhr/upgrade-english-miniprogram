@@ -1,0 +1,59 @@
+<!-- pages/home/index.wxml -->
+<view class="page">
+  <!-- 顶部欢迎区 -->
+  <view class="hero">
+    <view class="hero-emoji">🚀</view>
+    <view class="hero-title">UpGrade English</view>
+    <view class="hero-sub">Oxford Phonics World · 儿童英语学习</view>
+    <view class="hero-stars">
+      <text class="star-icon">⭐</text>
+      <text class="star-count">{{stars}} 颗星星</text>
+      <text class="streak-badge" wx:if="{{streak > 0}}">🔥 {{streak}}天连续</text>
+    </view>
+  </view>
+
+  <!-- 字母学习模块 -->
+  <view class="module-card" bindtap="goModule" data-id="abc">
+    <view class="module-emoji">🔤</view>
+    <view class="module-info">
+      <view class="module-name">ABC 字母学习</view>
+      <view class="module-desc">26个字母 · 发音与词汇</view>
+    </view>
+    <view class="module-arrow">›</view>
+  </view>
+
+  <!-- 单元列表标题 -->
+  <view class="section-title">
+    <text class="section-line"></text>
+    <text class="section-text">📚 Course Units · 课程单元</text>
+    <text class="section-line"></text>
+  </view>
+
+  <!-- 单元网格 -->
+  <view class="unit-grid">
+    <view 
+      class="unit-card" 
+      wx:for="{{units}}" 
+      wx:key="id"
+      bindtap="goUnit" 
+      data-id="{{item.id}}"
+      style="border-left: 6rpx solid {{item.color}}"
+    >
+      <view class="unit-top">
+        <text class="unit-emoji">{{item.emoji}}</text>
+        <text class="unit-id">U{{item.id.slice(1)}}</text>
+      </view>
+      <view class="unit-name">{{item.name}}</view>
+      <view class="unit-zh">{{item.zh}}</view>
+      <view class="unit-progress" wx:if="{{progress[item.id]}}">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{progress[item.id]}}%; background: {{item.color}}"></view>
+        </view>
+        <text class="progress-text">{{progress[item.id]}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部间距 -->
+  <view style="height: 200rpx"></view>
+</view>

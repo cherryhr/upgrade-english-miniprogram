@@ -1,0 +1,191 @@
+/* pages/checkin/index.wxss */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%);
+  padding: 0 24rpx;
+}
+
+.header {
+  text-align: center;
+  padding: 50rpx 0 30rpx;
+}
+
+.header-emoji { font-size: 80rpx; margin-bottom: 12rpx; }
+
+.header-title {
+  font-size: 48rpx;
+  font-weight: 900;
+  background: linear-gradient(135deg, #F5C518, #FF8C42);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8rpx;
+}
+
+.header-sub {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 打卡按钮 */
+.checkin-area {
+  display: flex;
+  justify-content: center;
+  padding: 20rpx 0 30rpx;
+}
+
+.checkin-btn {
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5C518, #FF8C42);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(245, 197, 24, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.checkin-btn:active {
+  transform: scale(0.9);
+}
+
+.checkin-btn.checked {
+  background: linear-gradient(135deg, #27AE60, #2ECC71);
+  box-shadow: 0 8rpx 32rpx rgba(39, 174, 96, 0.4);
+}
+
+.checkin-icon { font-size: 72rpx; margin-bottom: 8rpx; }
+
+.checkin-label {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: white;
+}
+
+/* 统计卡片 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+  margin-bottom: 40rpx;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 20rpx;
+  padding: 24rpx 16rpx;
+  text-align: center;
+}
+
+.stat-num {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 900;
+  color: #F5C518;
+  margin-bottom: 4rpx;
+}
+
+.stat-label {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 日历 */
+.calendar-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16rpx;
+}
+
+.calendar {
+  background: rgba(255,255,255,0.06);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4rpx;
+  margin-bottom: 12rpx;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.4);
+  font-weight: 700;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4rpx;
+}
+
+.day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: white;
+  border-radius: 50%;
+}
+
+.checked-day {
+  background: #27AE60;
+  color: white;
+  font-weight: 800;
+}
+
+.future-day {
+  color: rgba(255,255,255,0.2);
+}
+
+/* 打卡记录 */
+.records-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16rpx;
+}
+
+.records-list {
+  background: rgba(255,255,255,0.04);
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid rgba(255,255,255,0.05);
+}
+
+.record-item:last-child { border-bottom: none; }
+
+.record-date {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.6);
+}
+
+.record-status {
+  font-size: 24rpx;
+  color: #27AE60;
+  font-weight: 700;
+}
+
+.record-empty {
+  text-align: center;
+  padding: 40rpx;
+  color: rgba(255,255,255,0.3);
+  font-size: 26rpx;
+}

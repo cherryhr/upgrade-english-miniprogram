@@ -1,0 +1,61 @@
+<!-- pages/checkin/index.wxml -->
+<view class="page">
+  <view class="header">
+    <view class="header-emoji">📖</view>
+    <view class="header-title">每日打卡</view>
+    <view class="header-sub">坚持学习 · 养成好习惯</view>
+  </view>
+
+  <!-- 打卡按钮 -->
+  <view class="checkin-area">
+    <view class="checkin-btn {{checkedToday ? 'checked' : ''}}" bindtap="doCheckin">
+      <text class="checkin-icon">{{checkedToday ? '✅' : '⭐'}}</text>
+      <text class="checkin-label">{{checkedToday ? '今日已打卡' : '点击打卡'}}</text>
+    </view>
+  </view>
+
+  <!-- 统计 -->
+  <view class="stats-grid">
+    <view class="stat-card">
+      <text class="stat-num">{{totalDays}}</text>
+      <text class="stat-label">累计打卡</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{streak}}</text>
+      <text class="stat-label">连续天数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">⭐{{stars}}</text>
+      <text class="stat-label">获得星星</text>
+    </view>
+  </view>
+
+  <!-- 打卡日历 -->
+  <view class="calendar-title">📅 打卡日历 · {{currentMonth}}</view>
+  <view class="calendar">
+    <view class="weekday-row">
+      <text wx:for="{{weekdays}}" wx:key="index" class="weekday">{{item}}</text>
+    </view>
+    <view class="days-grid">
+      <view 
+        wx:for="{{calendarDays}}" 
+        wx:key="index"
+        class="day-cell {{item.checked ? 'checked-day' : ''}} {{item.future ? 'future-day' : ''}}"
+      >
+        {{item.day}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 打卡记录 -->
+  <view class="records-title">📝 最近打卡记录</view>
+  <view class="records-list">
+    <view class="record-item" wx:for="{{recentRecords}}" wx:key="index">
+      <text class="record-date">{{item.date}}</text>
+      <text class="record-status">✅ 已打卡</text>
+    </view>
+    <view wx:if="{{recentRecords.length === 0}}" class="record-empty">
+      还没有打卡记录，开始今日打卡吧！🎉
+    </view>
+  </view>
+</view>

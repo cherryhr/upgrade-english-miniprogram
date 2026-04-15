@@ -1,0 +1,230 @@
+<!-- pages/unit/index.wxml -->
+<view class="page">
+  <!-- 顶部返回 -->
+  <view class="nav-bar">
+    <view class="back-btn" bindtap="goBack">‹ 返回</view>
+    <view class="nav-title">{{unit.emoji}} {{unit.name}}</view>
+    <view class="nav-spacer"></view>
+  </view>
+
+  <!-- 标签栏 -->
+  <view class="tab-bar">
+    <view 
+      class="tab-item {{tab === 'vocab' ? 'active' : ''}}" 
+      bindtap="switchTab" data-tab="vocab">📝 词汇</view>
+    <view 
+      class="tab-item {{tab === 'sentences' ? 'active' : ''}}" 
+      bindtap="switchTab" data-tab="sentences">💬 句型</view>
+    <view 
+      class="tab-item {{tab === 'song' ? 'active' : ''}}" 
+      bindtap="switchTab" data-tab="song">🎵 歌曲</view>
+    <view 
+      class="tab-item {{tab === 'games' ? 'active' : ''}}" 
+      bindtap="switchTab" data-tab="games">🎮 游戏</view>
+  </view>
+
+  <!-- 词汇内容 -->
+  <view wx:if="{{tab === 'vocab'}}" class="content">
+    <view class="vocab-grid">
+      <view 
+        class="vocab-card" 
+        wx:for="{{displayVocab}}" 
+        wx:key="en"
+        bindtap="speakWord" 
+        data-en="{{item.en}}"
+        data-zh="{{item.zh}}"
+      >
+        <text class="vocab-emoji">{{item.emoji}}</text>
+        <text class="vocab-en">{{item.en}}</text>
+        <text class="vocab-zh">{{item.zh}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 句型内容 -->
+  <view wx:if="{{tab === 'sentences'}}" class="content">
+    <view class="qa-list">
+      <view class="qa-card" wx:for="{{unit.sentences}}" wx:key="index">
+        <view class="qa-q" bindtap="speakQ" data-en="{{item.q.en}}">
+          <text class="qa-icon">{{item.q.icon}}</text>
+          <view class="qa-text-wrap">
+            <text class="qa-en">{{item.q.en}}</text>
+            <text class="qa-zh">{{item.q.zh}}</text>
+          </view>
+          <text class="qa-speak">🔊</text>
+        </view>
+        <view class="qa-a" bindtap="speakA" data-en="{{item.a.en}}">
+          <text class="qa-icon">{{item.a.icon}}</text>
+          <view class="qa-text-wrap">
+            <text class="qa-en">{{item.a.en}}</text>
+            <text class="qa-zh">{{item.a.zh}}</text>
+          </view>
+          <text class="qa-speak">🔊</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 歌曲内容 -->
+  <view wx:if="{{tab === 'song'}}" class="content">
+    <view class="song-card">
+      <view class="song-title">{{unit.song.title}}</view>
+      <view class="song-progress-bar">
+        <view class="song-progress-fill" style="width: {{songProgress}}%"></view>
+      </view>
+      <view class="song-current">{{currentLine.zh}}</view>
+      <view class="song-lyric">{{currentLine.text}}</view>
+      <view class="song-controls">
+        <view class="song-btn" bindtap="songPrev">⏮️</view>
+        <view class="song-play-btn" bindtap="toggleSong">
+          {{isPlaying ? '⏸️ 暂停' : '▶️ 播放'}}
+        </view>
+        <view class="song-btn" bindtap="songNext">⏭️</view>
+      </view>
+    </view>
+
+    <!-- 歌词列表 -->
+    <view class="lyrics-list">
+      <view 
+        class="lyric-item {{currentLineIndex === index ? 'active' : ''}}"
+        wx:for="{{unit.song.lines}}" 
+        wx:key="index"
+        bindtap="goToLine" data-index="{{index}}"
+      >
+        <text class="lyric-num">{{index + 1}}</text>
+        <view class="lyric-texts">
+          <text class="lyric-en">{{item.text}}</text>
+          <text class="lyric-zh">{{item.zh}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 游戏内容 -->
+  <view wx:if="{{tab === 'games'}}" class="content">
+    <view class="games-grid">
+      <view class="game-card" bindtap="playGame" data-type="memory">
+        <text class="game-emoji">🃏</text>
+        <text class="game-name">Memory Match</text>
+        <text class="game-desc">翻牌记忆配对</text>
+      </view>
+      <view class="game-card" bindtap="playGame" data-type="quiz">
+        <text class="game-emoji">🧠</text>
+        <text class="game-name">Quiz Time!</text>
+        <text class="game-desc">知识问答挑战</text>
+      </view>
+      <view class="game-card" bindtap="playGame" data-type="spelling">
+        <text class="game-emoji">🐝</text>
+        <text class="game-name">Spelling Bee</text>
+        <text class="game-desc">拼写挑战</text>
+      </view>
+      <view class="game-card" bindtap="playGame" data-type="bubble">
+        <text class="game-emoji">🫧</text>
+        <text class="game-name">Bubble Pop</text>
+        <text class="game-desc">泡泡消消乐</text>
+      </view>
+    </view>
+
+    <!-- Memory Match 游戏区 -->
+    <view wx:if="{{gameType === 'memory'}}" class="game-area">
+      <view class="game-header">
+        <text class="game-title">🃏 Memory Match</text>
+        <text class="game-moves">翻牌次数：{{moves}}</text>
+      </view>
+      <view class="memory-grid">
+        <view 
+          wx:for="{{memoryCards}}" 
+          wx:key="idx"
+          class="memory-card {{item.flipped ? 'flipped' : ''}} {{item.matched ? 'matched' : ''}}"
+          bindtap="flipCard" 
+          data-idx="{{index}}"
+        >
+          <view class="card-front">❓</view>
+          <view class="card-back">
+            <text class="card-emoji">{{item.emoji}}</text>
+            <text class="card-en">{{item.en}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Quiz 游戏区 -->
+    <view wx:if="{{gameType === 'quiz'}}" class="game-area">
+      <view class="game-header">
+        <text class="game-title">🧠 Quiz Time!</text>
+        <text class="game-score">得分：{{quizScore}}/{{quizTotal}}</text>
+      </view>
+      <view class="quiz-card">
+        <view class="quiz-q">
+          <text class="quiz-icon">{{currentQA.q.icon}}</text>
+          <text class="quiz-en">{{currentQA.q.en}}</text>
+          <text class="quiz-zh">{{currentQA.q.zh}}</text>
+        </view>
+        <view class="quiz-options">
+          <view 
+            wx:for="{{quizOptions}}" 
+            wx:key="index"
+            class="quiz-option {{quizAnswered ? (item === currentQA.a.en ? 'correct' : (item === quizSelected ? 'wrong' : 'disabled')) : ''}}"
+            bindtap="selectAnswer" 
+            data-answer="{{item}}"
+          >{{item}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Spelling 游戏区 -->
+    <view wx:if="{{gameType === 'spelling'}}" class="game-area">
+      <view class="game-header">
+        <text class="game-title">🐝 Spelling Bee</text>
+      </view>
+      <view class="spelling-prompt" bindtap="speakSpelling">
+        <text class="spelling-emoji">{{currentWord.emoji}}</text>
+        <text class="spelling-zh">{{currentWord.zh}}</text>
+        <text class="spelling-hint">🔊 点击听发音</text>
+      </view>
+      <view class="spelling-input-wrap">
+        <input 
+          class="spelling-input" 
+          value="{{spellingInput}}"
+          bindinput="onSpellingInput"
+          placeholder="请输入英文单词..."
+          disabled="{{spellingDone}}"
+        />
+        <view class="spelling-check-btn" bindtap="checkSpelling">检查</view>
+      </view>
+      <view class="spelling-result" wx:if="{{spellingResult !== null}}">
+        <text wx:if="{{spellingResult}}">🎉 正确！{{currentWord.en}}</text>
+        <text wx:else>❌ 正确答案是：{{currentWord.en}}</text>
+      </view>
+    </view>
+
+    <!-- Bubble 游戏区 -->
+    <view wx:if="{{gameType === 'bubble'}}" class="game-area">
+      <view class="game-header">
+        <text class="game-title">🫧 Bubble Pop</text>
+        <text class="game-score">{{bubbleScore}} 分</text>
+      </view>
+      <view class="bubble-prompt">
+        <text class="bubble-task">找出正确的答案：</text>
+        <text class="bubble-word">{{bubbleCorrect}}</text>
+      </view>
+      <view class="bubble-grid">
+        <view 
+          wx:for="{{bubbleOptions}}" 
+          wx:key="index"
+          class="bubble-item {{item === bubblePopped ? (item === bubbleCorrect ? 'correct' : 'wrong') : ''}}"
+          bindtap="popBubble" 
+          data-word="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 游戏返回按钮 -->
+    <view class="game-back" wx:if="{{gameType}}" bindtap="exitGame">
+      ‹ 返回游戏列表
+    </view>
+  </view>
+
+  <!-- 底部间距 -->
+  <view style="height: 40rpx"></view>
+</view>
