@@ -1,0 +1,12 @@
+{
+  "name": "upgrade-english-miniprogram",
+  "version": "1.0.0",
+  "description": "UpGrade English - 微信小程序儿童英语学习",
+  "scripts": {
+    "upload": "node upload.js",
+    "build": "npm install && npm run upload"
+  },
+  "dependencies": {
+    "miniprogram-ci": "^1.10.4"
+  }
+}

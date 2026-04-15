@@ -1,0 +1,55 @@
+name: Deploy WeChat Mini Program
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download WeChat private key
+        env:
+          WX_PRIVATE_KEY: ${{ secrets.WX_PRIVATE_KEY }}
+        run: |
+          if [ -n "$WX_PRIVATE_KEY" ]; then
+            echo "$WX_PRIVATE_KEY" > private.key
+            chmod 600 private.key
+            echo "✅ 私钥文件已配置"
+          else
+            echo "⚠️ 警告: 未配置私钥，跳过上传统钥验证"
+            echo "请在微信公众平台下载私钥并配置到 GitHub Secrets"
+          fi
+
+      - name: Upload to WeChat Mini Program
+        env:
+          WX_APPID: ${{ secrets.WX_APPID }}
+          WX_SECRET: ${{ secrets.WX_SECRET }}
+          WX_PRIVATE_KEY: ${{ secrets.WX_PRIVATE_KEY }}
+        run: node upload.js
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 📋 部署状态" >> $GITHUB_STEP_SUMMARY
+          echo "| 项目 | 值 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|----|" >> $GITHUB_STEP_SUMMARY
+          echo "| 触发时间 | $(date '+%Y-%m-%d %H:%M:%S') |" >> $GITHUB_STEP_SUMMARY
+          echo "| 运行ID | ${{ github.run_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 版本 | 1.0.${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
