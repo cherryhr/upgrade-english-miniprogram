@@ -7,6 +7,6 @@
     "build": "npm install && npm run upload"
   },
   "dependencies": {
-    "miniprogram-ci": "^1.10.4"
+    "miniprogram-ci": "^2.1.32"
   }
 }
