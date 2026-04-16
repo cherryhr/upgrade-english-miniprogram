@@ -1,7 +1,5 @@
 name: Deploy WeChat Mini Program
 
-name: Deploy WeChat Mini Program
-
 on:
   push:
     branches:
