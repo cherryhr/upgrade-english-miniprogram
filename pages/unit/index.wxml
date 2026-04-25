@@ -42,28 +42,125 @@
     </view>
   </view>
 
-  <!-- 句型内容 -->
-  <view wx:if="{{tab === 'sentences'}}" class="content">
-    <view class="qa-list">
-      <view class="qa-card" wx:for="{{unit.sentences}}" wx:key="index">
-        <view class="qa-q" bindtap="speakQ" data-en="{{item.q.en}}">
-          <text class="qa-icon">{{item.q.icon}}</text>
-          <view class="qa-text-wrap">
-            <text class="qa-en">{{item.q.en}}</text>
-            <text class="qa-zh">{{item.q.zh}}</text>
+  <!-- 句型内容 - 卡通对话场景 -->
+  <view wx:if="{{tab === 'sentences'}}" class="dialogue-scene">
+
+    <!-- 场景背景 -->
+    <view class="scene-bg scene-bg-{{unit.id}}">
+      <view class="scene-deco scene-deco-1"></view>
+      <view class="scene-deco scene-deco-2"></view>
+      <view class="scene-deco scene-deco-3"></view>
+    </view>
+
+    <!-- 场景标题 -->
+    <view class="scene-header">
+      <text class="scene-title">{{unit.emoji}} {{unit.name}} · 对话练习</text>
+      <text class="scene-hint">👆 点击气泡听对话</text>
+    </view>
+
+    <!-- 角色区域 -->
+    <view class="characters-row">
+
+      <!-- Emma 老师 (左侧) -->
+      <view class="character emma {{dialogueSpeaker === 'emma' ? 'speaking' : 'idle'}}">
+        <view class="char-avatar emma-avatar">
+          <view class="emma-hair"></view>
+          <view class="emma-face">
+            <view class="emma-eyes">
+              <view class="eye eye-left {{dialogueSpeaker === 'emma' ? 'eye-happy' : ''}}"></view>
+              <view class="eye eye-right {{dialogueSpeaker === 'emma' ? 'eye-happy' : ''}}"></view>
+            </view>
+            <view class="emma-mouth {{dialogueSpeaker === 'emma' ? 'mouth-smile' : 'mouth-neutral'}}"></view>
+            <view class="emma-glasses"></view>
           </view>
-          <text class="qa-speak">🔊</text>
+          <view class="emma-body"></view>
         </view>
-        <view class="qa-a" bindtap="speakA" data-en="{{item.a.en}}">
-          <text class="qa-icon">{{item.a.icon}}</text>
-          <view class="qa-text-wrap">
-            <text class="qa-en">{{item.a.en}}</text>
-            <text class="qa-zh">{{item.a.zh}}</text>
-          </view>
-          <text class="qa-speak">🔊</text>
+        <text class="char-name emma-name">Emma 👩‍🏫</text>
+      </view>
+
+      <!-- 中间气泡区域 -->
+      <view class="bubble-zone">
+        <!-- 问题气泡 (Emma 问) -->
+        <view 
+          class="speech-bubble bubble-q {{dialogueState === 'q' ? 'bubble-in' : 'bubble-hidden'}}"
+          bindtap="playDialogueQ"
+        >
+          <view class="bubble-tail bubble-tail-left"></view>
+          <text class="bubble-en bubble-en-q">{{dialogueQ.en}}</text>
+          <text class="bubble-zh bubble-zh-q">{{dialogueQ.zh}}</text>
+          <text class="bubble-tap-hint">🔊 点击听</text>
+        </view>
+
+        <!-- 回答气泡 (Tommy 答) -->
+        <view 
+          class="speech-bubble bubble-a {{dialogueState === 'a' ? 'bubble-in' : 'bubble-hidden'}}"
+          bindtap="playDialogueA"
+        >
+          <view class="bubble-tail bubble-tail-right"></view>
+          <text class="bubble-en bubble-en-a">{{dialogueA.en}}</text>
+          <text class="bubble-zh bubble-zh-a">{{dialogueA.zh}}</text>
+          <text class="bubble-tap-hint">🔊 点击听</text>
+        </view>
+
+        <!-- 等待提示 -->
+        <view class="waiting-hint {{dialogueState === 'idle' ? 'hint-show' : ''}}">
+          <text class="waiting-text">👆 点击下方句型开始对话</text>
         </view>
       </view>
+
+      <!-- Tommy 学生 (右侧) -->
+      <view class="character tommy {{dialogueSpeaker === 'tommy' ? 'speaking' : 'idle'}}">
+        <view class="char-avatar tommy-avatar">
+          <view class="tommy-hair"></view>
+          <view class="tommy-face">
+            <view class="emma-eyes">
+              <view class="eye eye-left {{dialogueSpeaker === 'tommy' ? 'eye-happy' : ''}}"></view>
+              <view class="eye eye-right {{dialogueSpeaker === 'tommy' ? 'eye-happy' : ''}}"></view>
+            </view>
+            <view class="tommy-mouth {{dialogueSpeaker === 'tommy' ? 'mouth-smile' : 'mouth-curious'}}"></view>
+          </view>
+          <view class="tommy-body"></view>
+        </view>
+        <text class="char-name tommy-name">Tommy 👦</text>
+      </view>
+
     </view>
+
+    <!-- 进度指示 -->
+    <view class="dialogue-progress">
+      <text class="dp-label">句型 {{dialogueIndex + 1}} / {{unit.sentences.length}}</text>
+      <view class="dp-bar">
+        <view class="dp-fill" style="width: {{(dialogueIndex + 1) / unit.sentences.length * 100}}%"></view>
+      </view>
+    </view>
+
+    <!-- 句型列表 (横向滑动) -->
+    <view class="dialogue-list">
+      <view 
+        class="dialogue-item {{dialogueIndex === index ? 'active' : ''}}"
+        wx:for="{{unit.sentences}}"
+        wx:key="index"
+        bindtap="selectDialogue"
+        data-index="{{index}}"
+      >
+        <view class="di-q">{{item.q.en}}</view>
+        <view class="di-a">{{item.a.en}}</view>
+      </view>
+    </view>
+
+    <!-- 播放控制 -->
+    <view class="dialogue-controls">
+      <view class="dc-btn dc-prev" bindtap="dialoguePrev">
+        <text>⏮️ 上一句</text>
+      </view>
+      <view class="dc-btn dc-play" bindtap="playFullDialogue">
+        <text>{{dialoguePlaying ? '⏸️ 暂停' : '▶️ 播放对话'}}</text>
+      </view>
+      <view class="dc-btn dc-next" bindtap="dialogueNext">
+        <text>下一句 ⏭️</text>
+      </view>
+    </view>
+
   </view>
 
   <!-- 歌曲内容 -->

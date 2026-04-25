@@ -30,6 +30,14 @@ Page({
     currentLine: { text: '', zh: '' },
     currentLineIndex: 0,
     songTimer: null,
+    // 对话场景相关
+    dialogueIndex: 0,
+    dialogueQ: { en: '', zh: '' },
+    dialogueA: { en: '', zh: '' },
+    dialogueState: 'idle', // idle | q | a
+    dialogueSpeaker: null, // emma | tommy | null
+    dialoguePlaying: false,
+    dialoguePlayTimer: null,
     // 游戏相关
     gameType: null,
     memoryCards: [],
@@ -98,6 +106,7 @@ Page({
       });
       
       this.initSong(unit);
+      this.initDialogue(unit);
       
       // 初始化游戏
       if (initialGameType) {
@@ -114,7 +123,8 @@ Page({
 
   onUnload() {
     if (this.data.songTimer) clearInterval(this.data.songTimer);
-    tts.stop(); // 停止 TTS
+    if (this.data.dialoguePlayTimer) clearTimeout(this.data.dialoguePlayTimer);
+    tts.stop();
   },
 
   goBack() {
@@ -147,6 +157,148 @@ Page({
     console.log('句型A点击:', en);
     wx.showToast({ title: en, icon: 'none', duration: 800 });
     tts.speakEnglish(en);
+  },
+
+  // ===== 卡通对话场景 =====
+  initDialogue(unit) {
+    if (!unit || !unit.sentences || !unit.sentences.length) return;
+    const first = unit.sentences[0];
+    this.setData({
+      dialogueIndex: 0,
+      dialogueQ: first.q || { en: '', zh: '' },
+      dialogueA: first.a || { en: '', zh: '' },
+      dialogueState: 'idle',
+      dialogueSpeaker: null,
+      dialoguePlaying: false,
+    });
+  },
+
+  // 选择句型
+  selectDialogue(e) {
+    const idx = e.currentTarget.dataset.index;
+    const { unit } = this.data;
+    if (!unit || !unit.sentences) return;
+    const s = unit.sentences[idx];
+    if (!s) return;
+
+    // 停止当前播放
+    this._stopDialogue();
+
+    this.setData({
+      dialogueIndex: idx,
+      dialogueQ: s.q || { en: '', zh: '' },
+      dialogueA: s.a || { en: '', zh: '' },
+      dialogueState: 'idle',
+      dialogueSpeaker: null,
+      dialoguePlaying: false,
+    });
+  },
+
+  // 播放问题 (Emma 问)
+  playDialogueQ() {
+    const { dialogueQ, dialoguePlaying } = this.data;
+    if (!dialogueQ.en) return;
+
+    // 如果正在顺序播放，先停止
+    if (dialoguePlaying) {
+      this._stopDialogue();
+      return;
+    }
+
+    console.log('🎤 Emma 问:', dialogueQ.en);
+    this.setData({ dialogueSpeaker: 'emma', dialogueState: 'q' });
+    wx.showToast({ title: dialogueQ.zh || dialogueQ.en, icon: 'none', duration: 1000 });
+    tts.speakEnglish(dialogueQ.en);
+  },
+
+  // 播放回答 (Tommy 答)
+  playDialogueA() {
+    const { dialogueA, dialoguePlaying } = this.data;
+    if (!dialogueA.en) return;
+
+    if (dialoguePlaying) {
+      this._stopDialogue();
+      return;
+    }
+
+    console.log('🎤 Tommy 答:', dialogueA.en);
+    this.setData({ dialogueSpeaker: 'tommy', dialogueState: 'a' });
+    wx.showToast({ title: dialogueA.zh || dialogueA.en, icon: 'none', duration: 1000 });
+    tts.speakEnglish(dialogueA.en);
+  },
+
+  // 顺序播放完整对话
+  playFullDialogue() {
+    const { dialoguePlaying, dialogueState, unit } = this.data;
+    if (dialoguePlaying) {
+      this._stopDialogue();
+      return;
+    }
+
+    // 播放问题
+    const { dialogueQ } = this.data;
+    if (!dialogueQ.en) return;
+
+    this.setData({ dialoguePlaying: true });
+
+    // Emma 问
+    this.setData({ dialogueSpeaker: 'emma', dialogueState: 'q' });
+    tts.speakEnglish(dialogueQ.en);
+
+    // 2秒后 Tommy 答
+    const timer = setTimeout(() => {
+      const { dialogueA } = this.data;
+      this.setData({ dialogueSpeaker: 'tommy', dialogueState: 'a' });
+      tts.speakEnglish(dialogueA.en);
+    }, 2200);
+
+    this.setData({ dialoguePlayTimer: timer });
+  },
+
+  // 停止播放
+  _stopDialogue() {
+    const { dialoguePlayTimer } = this.data;
+    if (dialoguePlayTimer) {
+      clearTimeout(dialoguePlayTimer);
+    }
+    tts.stop();
+    this.setData({
+      dialoguePlaying: false,
+      dialoguePlayTimer: null,
+      dialogueSpeaker: null,
+    });
+  },
+
+  // 上一句
+  dialoguePrev() {
+    const { dialogueIndex, unit } = this.data;
+    if (!unit || !unit.sentences) return;
+    const prevIdx = Math.max(0, dialogueIndex - 1);
+    this._stopDialogue();
+    const s = unit.sentences[prevIdx];
+    this.setData({
+      dialogueIndex: prevIdx,
+      dialogueQ: s.q || { en: '', zh: '' },
+      dialogueA: s.a || { en: '', zh: '' },
+      dialogueState: 'idle',
+      dialogueSpeaker: null,
+    });
+  },
+
+  // 下一句
+  dialogueNext() {
+    const { dialogueIndex, unit } = this.data;
+    if (!unit || !unit.sentences) return;
+    const nextIdx = Math.min(unit.sentences.length - 1, dialogueIndex + 1);
+    this._stopDialogue();
+    const s = unit.sentences[nextIdx];
+    this.setData({
+      dialogueIndex: nextIdx,
+      dialogueQ: s.q || { en: '', zh: '' },
+      dialogueA: s.a || { en: '', zh: '' },
+      dialogueState: 'idle',
+      dialogueSpeaker: null,
+    });
   },
 
   // ===== 歌曲播放 =====
