@@ -11,7 +11,7 @@ const UNITS = [
       { emoji: '😊', en: 'See you', zh: '回头见' }, { emoji: '🤗', en: 'Bye bye', zh: '拜拜' }
     ],
     sentences: [
-      { type: 'qa', q: { icon: '🙋', en: 'Hello What is your name?', zh: '你好！你叫什么名字？' }, a: { icon: '🏷️', en: 'Hi My name is Amy. Nice to meet you', zh: '嗨！我叫艾米。很高兴认识你！' } },
+      { type: 'qa', q: { icon: '🙋', en: 'Hello What is your name?', zh: '你好！你叫什么名字？' }, a: { icon: '🏷️', en: 'Hi My name is Amy', zh: '嗨！我叫艾米！' } },
       { type: 'qa', q: { icon: '❓', en: 'How are you today?', zh: '你今天好吗？' }, a: { icon: '😊', en: "I'm fine, thank you! And you?", zh: '我很好，谢谢！你呢？' } },
       { type: 'qa', q: { icon: '🌅', en: 'Good morning, Miss Wang How are you?', zh: '早上好，王老师！你好吗？' }, a: { icon: '☀️', en: "Good morning! I'm very well, thank you!", zh: '早上好！我很好，谢谢你！' } },
       { type: 'standalone', icon: '👋', en: 'Goodbye See you tomorrow', zh: '再见！明天见！' },
@@ -58,8 +58,8 @@ const UNITS = [
     ],
     sentences: [
       { type: 'qa', q: { icon: '❓', en: "What's your name?", zh: '你叫什么名字？' }, a: { icon: '🏷️', en: 'My name is Lily. What about you?', zh: '我的名字是莉莉。你呢？' } },
-      { type: 'qa', q: { icon: '❓', en: 'How old are you?', zh: '你几岁了？' }, a: { icon: '🔢', en: "I'm five years old. How old are you?", zh: '我五岁了。你几岁了？' } },
-      { type: 'qa', q: { icon: '❓', en: 'Where are you from?', zh: '你来自哪里？' }, a: { icon: '📍', en: "I'm from Beijing. Where are you from?", zh: '我来自北京。你来自哪里？' } },
+      { type: 'qa', q: { icon: '❓', en: 'How old are you?', zh: '你几岁了？' }, a: { icon: '🔢', en: "I'm five years old.", zh: '我五岁了。' } },
+      { type: 'qa', q: { icon: '❓', en: 'Where are you from?', zh: '你来自哪里？' }, a: { icon: '📍', en: "I am from Beijing. Where are you from?", zh: '我来自北京。你来自哪里？' } },
       { type: 'qa', q: { icon: '❓', en: 'Do you want to be my friend?', zh: '你想和我做朋友吗？' }, a: { icon: '🤝', en: "Yes! Nice to meet you! Let's be friends!", zh: '是的！很高兴认识你！我们做朋友吧！' } }
     ],
     song: { title: '🎵 Friends Song', lines: [
@@ -79,10 +79,10 @@ const UNITS = [
       { emoji: '🤒', en: 'Sick', zh: '生病' }, { emoji: '😮', en: 'Surprised', zh: '惊讶' }
     ],
     sentences: [
-      { type: 'qa', q: { icon: '❓', en: 'How are you feeling today?', zh: '你今天感觉怎么样？' }, a: { icon: '😊', en: "I'm feeling happy today I love school", zh: '我今天很开心！我喜欢上学！' } },
+      { type: 'qa', q: { icon: '❓', en: 'How are you feeling today?', zh: '你今天感觉怎么样？' }, a: { icon: '😊', en: "I am feeling happy today and I love school", zh: '我今天很开心！我喜欢上学！' } },
       { type: 'qa', q: { icon: '😢', en: "You look sad. What's wrong?", zh: '你看起来很难过。怎么了？' }, a: { icon: '😢', en: "I lost my toy. I feel very sad.", zh: '我的玩具丢了。我很难过。' } },
-      { type: 'qa', q: { icon: '🤩', en: 'Why are you so excited?', zh: '你为什么这么兴奋？' }, a: { icon: '🎉', en: "It's my birthday today I'm so excited", zh: '今天是我的生日！我太兴奋了！' } },
-      { type: 'qa', q: { icon: '😠', en: 'Why are you angry?', zh: '你为什么生气？' }, a: { icon: '😤', en: "My sister took my pencil I'm angry", zh: '我妹妹拿走了我的铅笔！我生气了！' } }
+      { type: 'qa', q: { icon: '🤩', en: 'Why are you so excited?', zh: '你为什么这么兴奋？' }, a: { icon: '🎉', en: "It's my birthday today", zh: '今天是我的生日！' } },
+      { type: 'qa', q: { icon: '😠', en: 'Why are you angry?', zh: '你为什么生气？' }, a: { icon: '😤', en: "My sister took my pen. So I am angry", zh: '我姐姐拿走了我的笔！所以我很生气！' } }
     ],
     song: { title: '🎵 Feelings Song', lines: [
       { text: 'How are you today? How are you? 😊', zh: '你今天怎么样？' },
@@ -103,7 +103,7 @@ const UNITS = [
     ],
     sentences: [
       { type: 'qa', q: { icon: '❓', en: 'What colour is this apple?', zh: '这个苹果是什么颜色？' }, a: { icon: '🔴', en: "It's red Red like a fire engine", zh: '它是红色的！就像消防车一样红！' } },
-      { type: 'qa', q: { icon: '❓', en: 'What is your favourite colour?', zh: '你最喜欢什么颜色？' }, a: { icon: '💛', en: 'My favourite colour is yellow Yellow like the sun', zh: '我最喜欢黄色！像太阳一样的黄色！' } },
+      { type: 'qa', q: { icon: '❓', en: 'What is your favourite colour?', zh: '你最喜欢什么颜色？' }, a: { icon: '💛', en: 'My favourite colour is yellow', zh: '我最喜欢黄色！' } },
       { type: 'qa', q: { icon: '🌈', en: 'Can you see a rainbow? How many colours?', zh: '你能看到彩虹吗？有多少种颜色？' }, a: { icon: '🎨', en: 'Yes A rainbow has seven beautiful colours', zh: '是的！彩虹有七种美丽的颜色！' } }
     ],
     song: { title: '🎵 Rainbow Colours', lines: [
@@ -127,7 +127,7 @@ const UNITS = [
     sentences: [
       { type: 'qa', q: { icon: '🔢', en: 'Can you count to ten?', zh: '你能数到十吗？' }, a: { icon: '🙌', en: 'Yes One, two, three, four, five, six, seven, eight, nine, ten 🎉', zh: '能！一，二，三，四，五，六，七，八，九，十！' } },
       { type: 'qa', q: { icon: '❓', en: 'How many apples are on the table?', zh: '桌子上有多少个苹果？' }, a: { icon: '5️⃣', en: 'There are five apples on the table', zh: '桌子上有五个苹果！' } },
-      { type: 'qa', q: { icon: '🎂', en: 'How old are you? How many candles?', zh: '你几岁了？蛋糕上有几根蜡烛？' }, a: { icon: '4️⃣', en: "I'm four years old Four candles on my cake", zh: '我四岁了！我的蛋糕上有四根蜡烛！' } }
+      { type: 'qa', q: { icon: '❓', en: 'How old are you? How many candles?', zh: '你几岁了？蛋糕上有几根蜡烛？' }, a: { icon: '4️⃣', en: "I am four years old. Four candles are on my cake", zh: '我四岁了！我的蛋糕上有四根蜡烛！' } }
     ],
     song: { title: '🎵 Counting Song', lines: [
       { text: 'One, two, three, four, five 🔢', zh: '一，二，三，四，五！' },
@@ -148,7 +148,7 @@ const UNITS = [
     ],
     sentences: [
       { type: 'qa', q: { icon: '❓', en: 'What animal is this? It says meow', zh: '这是什么动物？它喵喵叫！' }, a: { icon: '🐱', en: "It's a cat Cats say meow meow 🐾", zh: '它是一只猫！猫咪喵喵叫！' } },
-      { type: 'qa', q: { icon: '❓', en: 'Is the elephant big or small?', zh: '大象是大还是小？' }, a: { icon: '🐘', en: "The elephant is very big It's the biggest land animal", zh: '大象非常大！它是最大的陆地动物！' } },
+      { type: 'qa', q: { icon: '❓', en: 'Is the elephant big or small?', zh: '大象是大还是小？' }, a: { icon: '🐘', en: "The elephant is very big", zh: '大象非常大！' } },
       { type: 'qa', q: { icon: '❓', en: 'What does a lion do?', zh: '狮子做什么？' }, a: { icon: '🦁', en: 'A lion roars Roar Lions are very brave', zh: '狮子咆哮！吼！狮子非常勇敢！' } }
     ],
     song: { title: '🎵 Animal Sounds', lines: [
@@ -191,9 +191,9 @@ const UNITS = [
       { emoji: '🧠', en: 'Head', zh: '头' }
     ],
     sentences: [
-      { type: 'qa', q: { icon: '❓', en: 'Where is your nose? Can you point to it?', zh: '你的鼻子在哪里？你能指出来吗？' }, a: { icon: '👁️', en: 'Here is my nose Right here in the middle of my face', zh: '我的鼻子在这里！就在我脸的中间！' } },
+      { type: 'qa', q: { icon: '❓', en: 'Where is your nose? Can you point to it?', zh: '你的鼻子在哪里？你能指出来吗？' }, a: { icon: '👁️', en: 'Here is my nose', zh: '我的鼻子在这里！' } },
       { type: 'qa', q: { icon: '❓', en: 'How many eyes do you have?', zh: '你有几只眼睛？' }, a: { icon: '👀', en: 'I have two eyes Two big beautiful eyes', zh: '我有两只眼睛！两只大大的漂亮眼睛！' } },
-      { type: 'qa', q: { icon: '❓', en: 'What can you do with your hands?', zh: '你的手能做什么？' }, a: { icon: '🙌', en: 'I can clap wave draw and play with my hands', zh: '我的手能拍手、挥手、画画和玩耍！' } }
+      { type: 'qa', q: { icon: '❓', en: 'What can you do with your hands?', zh: '你的手能做什么？' }, a: { icon: '🙌', en: 'I can clap wave draw', zh: '我的手能拍手、挥手、画画！' } }
     ],
     song: { title: '🎵 Head Shoulders Knees', lines: [
       { text: 'Head, shoulders, knees and toes 🧠', zh: '头、肩膀、膝盖和脚趾！' },
@@ -214,7 +214,7 @@ const UNITS = [
       { emoji: '🥚', en: 'Egg', zh: '鸡蛋' }
     ],
     sentences: [
-      { type: 'qa', q: { icon: '❓', en: 'What do you like to eat?', zh: '你喜欢吃什么？' }, a: { icon: '🍎', en: 'I like apples and bananas They are sweet and yummy', zh: '我喜欢苹果和香蕉！它们甜甜的好吃极了！' } },
+      { type: 'qa', q: { icon: '❓', en: 'What do you like to eat?', zh: '你喜欢吃什么？' }, a: { icon: '🍎', en: 'I like apples and bananas', zh: '我喜欢苹果和香蕉！' } },
       { type: 'qa', q: { icon: '❓', en: 'Do you like carrots?', zh: '你喜欢胡萝卜吗？' }, a: { icon: '❌', en: "No, I don't like carrots. But I like pizza!", zh: '不，我不喜欢胡萝卜。但我喜欢披萨！' } },
       { type: 'qa', q: { icon: '😋', en: 'Does the cake taste good?', zh: '蛋糕好吃吗？' }, a: { icon: '🎂', en: 'Yes Yummy It is so delicious Can I have more', zh: '好吃！太美味了！我可以再来一块吗？' } }
     ],
@@ -235,7 +235,7 @@ const UNITS = [
       { emoji: '🎮', en: 'Game', zh: '游戏' }, { emoji: '🧩', en: 'Puzzle', zh: '拼图' }
     ],
     sentences: [
-      { type: 'qa', q: { icon: '❓', en: 'What is your favourite toy?', zh: '你最喜欢的玩具是什么？' }, a: { icon: '🧸', en: 'My favourite toy is my teddy bear His name is Brown', zh: '我最喜欢的玩具是泰迪熊！他叫棕棕！' } },
+      { type: 'qa', q: { icon: '❓', en: 'What is your favourite toy?', zh: '你最喜欢的玩具是什么？' }, a: { icon: '🧸', en: 'My favourite toy is my teddy bear', zh: '我最喜欢的玩具是泰迪熊！' } },
       { type: 'qa', q: { icon: '❓', en: 'Do you want to play ball with me?', zh: '你想和我玩球吗？' }, a: { icon: '⚽', en: "Yes! Let's play ball! I love football!", zh: '好的！我们来玩球！我喜欢踢足球！' } },
       { type: 'standalone', icon: '🎉', en: 'Playing together is so much fun', zh: '一起玩耍真是太有趣了！' }
     ],

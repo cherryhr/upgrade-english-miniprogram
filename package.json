@@ -1,6 +1,6 @@
 {
   "name": "upgrade-english-miniprogram",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "UpGrade English - 微信小程序儿童英语学习",
   "scripts": {
     "upload": "node upload.js",

@@ -54,8 +54,8 @@
 
     <!-- 场景标题 -->
     <view class="scene-header">
-      <text class="scene-title">{{unit.emoji}} {{unit.name}} · 对话练习</text>
-      <text class="scene-hint">👆 点击气泡听对话</text>
+      <text class="scene-title">{{unit.emoji}} {{unit.name}}</text>
+      <text class="scene-hint">👆 点击 ▶️ 听对话</text>
     </view>
 
     <!-- 角色区域 -->
@@ -75,7 +75,6 @@
           </view>
           <view class="emma-body"></view>
         </view>
-        <text class="char-name emma-name">Emma 👩‍🏫</text>
       </view>
 
       <!-- 中间气泡区域 -->
@@ -104,7 +103,7 @@
 
         <!-- 等待提示 -->
         <view class="waiting-hint {{dialogueState === 'idle' ? 'hint-show' : ''}}">
-          <text class="waiting-text">👆 点击下方句型开始对话</text>
+          <text class="waiting-text">👆 点击 ▶️ 开始</text>
         </view>
       </view>
 
@@ -121,43 +120,46 @@
           </view>
           <view class="tommy-body"></view>
         </view>
-        <text class="char-name tommy-name">Tommy 👦</text>
       </view>
 
     </view>
 
-    <!-- 进度指示 -->
+    <!-- 进度指示 - 圆点指示器 -->
     <view class="dialogue-progress">
-      <text class="dp-label">句型 {{dialogueIndex + 1}} / {{unit.sentences.length}}</text>
-      <view class="dp-bar">
-        <view class="dp-fill" style="width: {{(dialogueIndex + 1) / unit.sentences.length * 100}}%"></view>
+      <view class="dp-dots">
+        <view 
+          class="dp-dot {{dialogueIndex === index ? 'active' : ''}}"
+          wx:for="{{unit.sentences}}"
+          wx:key="index"
+        ></view>
       </view>
     </view>
 
     <!-- 句型列表 (横向滑动) -->
     <view class="dialogue-list">
       <view 
-        class="dialogue-item {{dialogueIndex === index ? 'active' : ''}}"
+        class="dialogue-item {{dialogueIndex === index ? 'active' : ''}} {{item.type === 'standalone' ? 'standalone-item' : ''}}"
         wx:for="{{unit.sentences}}"
         wx:key="index"
         bindtap="selectDialogue"
         data-index="{{index}}"
       >
-        <view class="di-q">{{item.q.en}}</view>
-        <view class="di-a">{{item.a.en}}</view>
+        <view class="di-q" wx:if="{{item.type === 'qa'}}">{{item.q.en}}</view>
+        <view class="di-a" wx:if="{{item.type === 'qa'}}">{{item.a.en}}</view>
+        <view class="di-standalone" wx:if="{{item.type === 'standalone'}}">{{item.en}}</view>
       </view>
     </view>
 
     <!-- 播放控制 -->
     <view class="dialogue-controls">
       <view class="dc-btn dc-prev" bindtap="dialoguePrev">
-        <text>⏮️ 上一句</text>
+        <text>⏮️</text>
       </view>
       <view class="dc-btn dc-play" bindtap="playFullDialogue">
-        <text>{{dialoguePlaying ? '⏸️ 暂停' : '▶️ 播放对话'}}</text>
+        <text>{{dialoguePlaying ? '⏸️' : '▶️'}}</text>
       </view>
       <view class="dc-btn dc-next" bindtap="dialogueNext">
-        <text>下一句 ⏭️</text>
+        <text>⏭️</text>
       </view>
     </view>
 

@@ -163,14 +163,26 @@ Page({
   initDialogue(unit) {
     if (!unit || !unit.sentences || !unit.sentences.length) return;
     const first = unit.sentences[0];
-    this.setData({
-      dialogueIndex: 0,
-      dialogueQ: first.q || { en: '', zh: '' },
-      dialogueA: first.a || { en: '', zh: '' },
-      dialogueState: 'idle',
-      dialogueSpeaker: null,
-      dialoguePlaying: false,
-    });
+    // 处理 standalone 类型句子
+    if (first.type === 'standalone') {
+      this.setData({
+        dialogueIndex: 0,
+        dialogueQ: { en: first.en, zh: first.zh },
+        dialogueA: { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+        dialoguePlaying: false,
+      });
+    } else {
+      this.setData({
+        dialogueIndex: 0,
+        dialogueQ: first.q || { en: '', zh: '' },
+        dialogueA: first.a || { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+        dialoguePlaying: false,
+      });
+    }
   },
 
   // 选择句型
@@ -184,14 +196,26 @@ Page({
     // 停止当前播放
     this._stopDialogue();
 
-    this.setData({
-      dialogueIndex: idx,
-      dialogueQ: s.q || { en: '', zh: '' },
-      dialogueA: s.a || { en: '', zh: '' },
-      dialogueState: 'idle',
-      dialogueSpeaker: null,
-      dialoguePlaying: false,
-    });
+    // 处理 standalone 类型句子
+    if (s.type === 'standalone') {
+      this.setData({
+        dialogueIndex: idx,
+        dialogueQ: { en: s.en, zh: s.zh },
+        dialogueA: { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+        dialoguePlaying: false,
+      });
+    } else {
+      this.setData({
+        dialogueIndex: idx,
+        dialogueQ: s.q || { en: '', zh: '' },
+        dialogueA: s.a || { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+        dialoguePlaying: false,
+      });
+    }
   },
 
   // 播放问题 (Emma 问)
@@ -245,12 +269,12 @@ Page({
     this.setData({ dialogueSpeaker: 'emma', dialogueState: 'q' });
     tts.speakEnglish(dialogueQ.en);
 
-    // 2秒后 Tommy 答
+    // 3.5秒后 Tommy 答（为5岁以下小朋友放慢速度）
     const timer = setTimeout(() => {
       const { dialogueA } = this.data;
       this.setData({ dialogueSpeaker: 'tommy', dialogueState: 'a' });
       tts.speakEnglish(dialogueA.en);
-    }, 2200);
+    }, 3500);
 
     this.setData({ dialoguePlayTimer: timer });
   },
@@ -276,13 +300,24 @@ Page({
     const prevIdx = Math.max(0, dialogueIndex - 1);
     this._stopDialogue();
     const s = unit.sentences[prevIdx];
-    this.setData({
-      dialogueIndex: prevIdx,
-      dialogueQ: s.q || { en: '', zh: '' },
-      dialogueA: s.a || { en: '', zh: '' },
-      dialogueState: 'idle',
-      dialogueSpeaker: null,
-    });
+    // 处理 standalone 类型句子
+    if (s.type === 'standalone') {
+      this.setData({
+        dialogueIndex: prevIdx,
+        dialogueQ: { en: s.en, zh: s.zh },
+        dialogueA: { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+      });
+    } else {
+      this.setData({
+        dialogueIndex: prevIdx,
+        dialogueQ: s.q || { en: '', zh: '' },
+        dialogueA: s.a || { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+      });
+    }
   },
 
   // 下一句
@@ -292,13 +327,24 @@ Page({
     const nextIdx = Math.min(unit.sentences.length - 1, dialogueIndex + 1);
     this._stopDialogue();
     const s = unit.sentences[nextIdx];
-    this.setData({
-      dialogueIndex: nextIdx,
-      dialogueQ: s.q || { en: '', zh: '' },
-      dialogueA: s.a || { en: '', zh: '' },
-      dialogueState: 'idle',
-      dialogueSpeaker: null,
-    });
+    // 处理 standalone 类型句子
+    if (s.type === 'standalone') {
+      this.setData({
+        dialogueIndex: nextIdx,
+        dialogueQ: { en: s.en, zh: s.zh },
+        dialogueA: { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+      });
+    } else {
+      this.setData({
+        dialogueIndex: nextIdx,
+        dialogueQ: s.q || { en: '', zh: '' },
+        dialogueA: s.a || { en: '', zh: '' },
+        dialogueState: 'idle',
+        dialogueSpeaker: null,
+      });
+    }
   },
 
   // ===== 歌曲播放 =====
