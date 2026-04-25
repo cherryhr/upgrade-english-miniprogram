@@ -1,52 +1,25 @@
 // pages/home/index.js
-const { UNITS } = require('../../utils/data.js');
+const { UNITS } = require('../../utils/units-data.js');
 
 Page({
   data: {
-    units: UNITS,
     stars: 0,
     streak: 0,
-    progress: {},
+    units: UNITS
   },
 
   onLoad() {
-    this.loadProgress();
+    // 加载星星和连续天数
+    const stars = wx.getStorageSync('stars') || 0;
+    const streak = wx.getStorageSync('streak') || 0;
+    this.setData({ stars, streak });
   },
 
   onShow() {
-    this.loadProgress();
-  },
-
-  loadProgress() {
-    const prog = wx.getStorageSync('ug_prog') || {};
-    const stars = prog._stars || 0;
-    const checkins = prog._checkins || {};
-    
-    // 计算连续打卡天数
-    let streak = 0;
-    const today = new Date().toISOString().split('T')[0];
-    const dates = Object.keys(checkins).sort().reverse();
-    if (dates.length > 0 && dates[0] === today) {
-      streak = 1;
-      for (let i = 1; i < dates.length; i++) {
-        const prev = new Date(dates[i - 1]);
-        const curr = new Date(dates[i]);
-        const diff = (prev - curr) / 86400000;
-        if (diff === 1) streak++;
-        else break;
-      }
-    }
-
-    // 计算每个单元的完成度
-    const progress = {};
-    UNITS.forEach(u => {
-      const unitProg = prog[u.id] || {};
-      const total = (u.vocab ? u.vocab.length : 0) + (u.sentences ? u.sentences.length : 0);
-      const done = (unitProg.vocab || []).length + (unitProg.sentences || []).length;
-      progress[u.id] = total > 0 ? Math.round((done / total) * 100) : 0;
-    });
-
-    this.setData({ stars, streak, progress });
+    // 更新星星显示
+    const stars = wx.getStorageSync('stars') || 0;
+    const streak = wx.getStorageSync('streak') || 0;
+    this.setData({ stars, streak });
   },
 
   goUnit(e) {
@@ -57,5 +30,13 @@ Page({
   goModule(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/unit/index?id=${id}&module=abc` });
+  },
+
+  goSongs() {
+    wx.switchTab({ url: '/pages/songs/index' });
+  },
+
+  goReview() {
+    wx.navigateTo({ url: '/pages/review/index' });
   }
 });

@@ -3,7 +3,9 @@
     "pages/home/index",
     "pages/unit/index",
     "pages/games/index",
-    "pages/checkin/index"
+    "pages/songs/index",
+    "pages/checkin/index",
+    "pages/review/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#1B4FD8",
@@ -14,7 +16,7 @@
   },
   "tabBar": {
     "color": "#aaa",
-    "selectedColor": "#F5C518",
+    "selectedColor": "#ff6b35",
     "backgroundColor": "#0a1628",
     "borderStyle": "black",
     "list": [
@@ -23,6 +25,12 @@
         "text": "首页",
         "iconPath": "static/tab-home.png",
         "selectedIconPath": "static/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/songs/index",
+        "text": "歌曲",
+        "iconPath": "static/tab-song.png",
+        "selectedIconPath": "static/tab-song-active.png"
       },
       {
         "pagePath": "pages/games/index",

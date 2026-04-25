@@ -13,6 +13,17 @@ App({
     const prog = wx.getStorageSync('ug_prog') || {};
     this.globalData.stars = prog._stars || 0;
     this.globalData.streak = this.calcStreak(prog);
+    
+    console.log('🚀 App 启动');
+    // 初始化 TTS 音频上下文
+    const tts = require('./utils/tts.js');
+    tts.init();
+  },
+
+  onShow() {
+    // 每次显示页面时初始化 TTS
+    const tts = require('./utils/tts.js');
+    tts.init();
   },
 
   calcStreak(prog) {

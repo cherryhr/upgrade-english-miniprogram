@@ -12,46 +12,57 @@
     </view>
   </view>
 
-  <!-- 字母学习模块 -->
-  <view class="module-card" bindtap="goModule" data-id="abc">
-    <view class="module-emoji">🔤</view>
-    <view class="module-info">
-      <view class="module-name">ABC 字母学习</view>
-      <view class="module-desc">26个字母 · 发音与词汇</view>
+  <!-- 快捷入口网格 -->
+  <view class="quick-grid">
+    <!-- 综合复习 -->
+    <view class="quick-card quick-review" bindtap="goReview">
+      <view class="quick-icon">🎯</view>
+      <view class="quick-name">Review</view>
+      <view class="quick-desc">综合复习</view>
+      <view class="quick-tag">20 Questions</view>
     </view>
-    <view class="module-arrow">›</view>
+
+    <!-- Songs 歌曲 -->
+    <view class="quick-card quick-songs" bindtap="goSongs">
+      <view class="quick-icon">🎵</view>
+      <view class="quick-name">Songs</view>
+      <view class="quick-desc">歌曲视频</view>
+      <view class="quick-tag">21 Videos</view>
+    </view>
+
+    <!-- ABC 字母 -->
+    <view class="quick-card quick-abc" bindtap="goModule" data-id="abc">
+      <view class="quick-icon">🔤</view>
+      <view class="quick-name">ABC</view>
+      <view class="quick-desc">字母学习</view>
+      <view class="quick-tag">26 Letters</view>
+    </view>
   </view>
 
-  <!-- 单元列表标题 -->
+  <!-- 单元学习列表 -->
   <view class="section-title">
-    <text class="section-line"></text>
-    <text class="section-text">📚 Course Units · 课程单元</text>
-    <text class="section-line"></text>
+    <text class="section-icon">📚</text>
+    <text class="section-text">12个单元 · Units 1-12</text>
   </view>
 
-  <!-- 单元网格 -->
-  <view class="unit-grid">
-    <view 
-      class="unit-card" 
-      wx:for="{{units}}" 
-      wx:key="id"
-      bindtap="goUnit" 
-      data-id="{{item.id}}"
-      style="border-left: 6rpx solid {{item.color}}"
-    >
-      <view class="unit-top">
-        <text class="unit-emoji">{{item.emoji}}</text>
-        <text class="unit-id">U{{item.id.slice(1)}}</text>
-      </view>
-      <view class="unit-name">{{item.name}}</view>
-      <view class="unit-zh">{{item.zh}}</view>
-      <view class="unit-progress" wx:if="{{progress[item.id]}}">
-        <view class="progress-bar">
-          <view class="progress-fill" style="width: {{progress[item.id]}}%; background: {{item.color}}"></view>
+  <view class="unit-list">
+    <block wx:for="{{units}}" wx:key="id">
+      <view class="unit-card" style="background: {{item.color}}" bindtap="goUnit" data-id="{{item.id}}">
+        <view class="unit-left">
+          <text class="unit-emoji">{{item.emoji}}</text>
+          <view class="unit-info">
+            <text class="unit-name">{{item.name}}</text>
+            <text class="unit-zh">{{item.zh}}</text>
+          </view>
         </view>
-        <text class="progress-text">{{progress[item.id]}}%</text>
+        <view class="unit-right">
+          <view class="unit-progress">
+            <text class="progress-text">{{item.progress || 0}}%</text>
+          </view>
+          <text class="unit-arrow">›</text>
+        </view>
       </view>
-    </view>
+    </block>
   </view>
 
   <!-- 底部间距 -->

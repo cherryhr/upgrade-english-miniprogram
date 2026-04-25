@@ -1,0 +1,74 @@
+<!-- pages/songs/index.wxml -->
+<view class="page">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <view class="header-icon">🎵</view>
+    <view class="header-title">Songs · 歌曲视频</view>
+    <view class="header-sub">{{totalVideos}} Videos · U1-U11</view>
+    <view class="header-hint">点击歌曲卡片即可播放视频</view>
+  </view>
+
+  <!-- 歌曲列表 -->
+  <view class="song-list">
+    <block wx:for="{{songs}}" wx:key="unit" wx:for-index="unitIdx">
+      <!-- 只显示有视频的单元 -->
+      <block wx:if="{{item.videos.length > 0}}">
+      <!-- 单元标题 -->
+      <view class="unit-title" style="background: {{item.color}}">
+        <text class="unit-emoji">{{item.emoji}}</text>
+        <text class="unit-text">{{item.name}}</text>
+        <text class="unit-zh">{{item.zh}}</text>
+      </view>
+
+      <!-- 视频列表 -->
+      <view class="video-grid">
+        <view 
+          class="video-card"
+          wx:for="{{item.videos}}"
+          wx:for-item="video"
+          wx:key="file"
+          wx:for-index="videoIdx"
+          bindtap="playVideo"
+          data-unit-idx="{{unitIdx}}"
+          data-video-idx="{{videoIdx}}"
+        >
+          <view class="video-icon">▶</view>
+          <view class="video-title">{{video.title}}</view>
+          <view class="video-desc">{{video.desc}}</view>
+        </view>
+      </view>
+      </block>
+    </block>
+  </view>
+
+  <!-- 底部间距 -->
+  <view style="height: 200rpx"></view>
+</view>
+
+<!-- 视频播放器弹窗 -->
+<view class="player-overlay" wx:if="{{playing}}" bindtap="closePlayer">
+  <view class="player-container" catchtap="">
+    <!-- 返回按钮 -->
+    <view class="player-back" bindtap="closePlayer">← 返回</view>
+    
+    <!-- 视频播放器 -->
+    <view class="video-player">
+      <video 
+        src="{{currentVideo.url}}"
+        controls
+        autoplay
+        show-center-play-btn
+        show-fullscreen-btn
+        binderror="videoError"
+        style="width: 100%; height: 100%"
+      ></video>
+    </view>
+
+    <!-- 歌曲信息 -->
+    <view class="video-info" style="background: {{currentUnit.color}}">
+      <view class="info-title">{{currentVideo.title}}</view>
+      <view class="info-desc">{{currentVideo.desc}}</view>
+      <view class="info-unit">{{currentUnit.emoji}} {{currentUnit.name}} · {{currentUnit.zh}}</view>
+    </view>
+  </view>
+</view>

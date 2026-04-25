@@ -41,6 +41,7 @@ async function main() {
       '*.md',
       '.github/**',
       'upload.js',
+      'test_token.js',
       'package.json',
       'package-lock.json',
     ],
@@ -49,7 +50,7 @@ async function main() {
   const result = await ci.upload({
     project,
     version,
-    desc: `GitHub Actions #${process.env.GITHUB_RUN_NUMBER || 'local'} - ${new Date().toLocaleString('zh-CN')}`,
+    desc: `Local Upload - ${new Date().toLocaleString('zh-CN')}`,
     setting: {
       es6: true,
       enhance: true,

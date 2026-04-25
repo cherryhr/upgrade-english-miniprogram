@@ -1,5 +1,24 @@
 // pages/unit/index.js
-const { UNITS, MODULES_DATA } = require('../../utils/data.js');
+const { UNITS, MODULES_DATA } = require('../../utils/units-data.js');
+const tts = require('../../utils/tts.js');
+
+// COS 视频基础URL
+const SONGS_VIDEOS_BASE = 'https://upgrade-videos-1412449710.cos.ap-guangzhou.myqcloud.com/Songs/';
+
+// ABC 模块数据 - 带防御性检查
+const ABC_MODULE = {
+  id: 'abc',
+  emoji: '🔤',
+  name: 'ABC Letters',
+  zh: '字母学习',
+  color: '#667eea',
+  items: (MODULES_DATA && MODULES_DATA.abc && MODULES_DATA.abc.items) ? MODULES_DATA.abc.items.map(item => ({
+    emoji: item.emoji || '',
+    letter: item.letter || item.en || '',
+    en: item.en || item.letter || '',
+    zh: item.zh || ''
+  })) : []
+};
 
 Page({
   data: {
@@ -16,6 +35,8 @@ Page({
     memoryCards: [],
     moves: 0,
     flipped: [],
+    memoryMatched: false,
+    memoryHint: '',
     // Quiz
     quizScore: 0,
     quizTotal: 0,
@@ -32,40 +53,60 @@ Page({
     spellingResult: null,
     spellingDone: false,
     // Bubble
+    bubbleQuestions: [],
+    bubbleIndex: 0,
     bubbleCorrect: '',
     bubbleOptions: [],
     bubbleScore: 0,
     bubblePopped: '',
+    // 歌曲视频
+    songVideos: [],
+    showVideoPlayer: false,
+    currentVideoUrl: '',
+    currentVideoTitle: '',
   },
 
   onLoad(query) {
+    // 初始化 TTS 音频上下文
+    tts.init();
+    
     const id = query.id;
     const isModule = query.module === 'abc';
-    const autoGameType = query.gameType || null;
+    const autoGameType = query.tab === 'games' ? query.gameType : null;
+    
+    console.log('📌 Unit 页面加载，id:', id, 'isModule:', isModule, 'gameType:', autoGameType);
     
     if (isModule) {
-      const mod = MODULES_DATA['abc'];
       this.setData({
-        unit: mod,
-        displayVocab: mod.items,
+        unit: ABC_MODULE,
+        displayVocab: ABC_MODULE.items,
         tab: 'vocab',
       });
     } else {
       const unit = UNITS.find(u => u.id === id);
+      console.log('📌 找到单元:', unit ? unit.name : '未找到', 'vocab数量:', unit ? unit.vocab.length : 0);
+      
+      // 如果有自动游戏类型，直接设置 gameType 并初始化游戏
+      const initialGameType = autoGameType;
+      
       this.setData({
         unit,
         displayVocab: unit ? unit.vocab : [],
-        tab: autoGameType ? 'games' : 'vocab',
-        gameType: autoGameType,
+        tab: 'song', // 默认显示歌曲标签
+        gameType: initialGameType,
+        songVideos: this._getSongVideos(unit),
       });
+      
       this.initSong(unit);
-      // 如果有自动游戏类型，立即开始游戏
-      if (autoGameType) {
+      
+      // 初始化游戏
+      if (initialGameType) {
+        console.log('🎮 自动开始游戏:', initialGameType);
         setTimeout(() => {
-          if (autoGameType === 'memory') this.initMemory();
-          if (autoGameType === 'quiz') this.initQuiz();
-          if (autoGameType === 'spelling') this.initSpelling();
-          if (autoGameType === 'bubble') this.initBubble();
+          if (initialGameType === 'memory') this.initMemory();
+          if (initialGameType === 'quiz') this.initQuiz();
+          if (initialGameType === 'spelling') this.initSpelling();
+          if (initialGameType === 'bubble') this.initBubble();
         }, 100);
       }
     }
@@ -73,6 +114,7 @@ Page({
 
   onUnload() {
     if (this.data.songTimer) clearInterval(this.data.songTimer);
+    tts.stop(); // 停止 TTS
   },
 
   goBack() {
@@ -87,17 +129,24 @@ Page({
   speakWord(e) {
     const en = e.currentTarget.dataset.en;
     const zh = e.currentTarget.dataset.zh;
-    wx.showToast({ title: zh, icon: 'none', duration: 1000 });
-    // 实际使用微信 TTS
-    // wx.createInnerAudioContext() 可用于播放音频
+    // 显示中文提示
+    wx.showToast({ title: zh, icon: 'none', duration: 800 });
+    // 播放英文发音
+    tts.speakEnglish(en);
   },
 
   speakQ(e) {
-    wx.showToast({ title: e.currentTarget.dataset.en, icon: 'none', duration: 1200 });
+    const en = e.currentTarget.dataset.en;
+    console.log('句型Q点击:', en);
+    wx.showToast({ title: en, icon: 'none', duration: 800 });
+    tts.speakEnglish(en);
   },
 
   speakA(e) {
-    wx.showToast({ title: e.currentTarget.dataset.en, icon: 'none', duration: 1200 });
+    const en = e.currentTarget.dataset.en;
+    console.log('句型A点击:', en);
+    wx.showToast({ title: en, icon: 'none', duration: 800 });
+    tts.speakEnglish(en);
   },
 
   // ===== 歌曲播放 =====
@@ -111,12 +160,26 @@ Page({
     });
   },
 
+  // 播放歌词发音 - 直接传递给TTS模块处理清理
+  playLyric(text) {
+    if (text) {
+      console.log('🎵 播放歌词:', text);
+      tts.speakEnglish(text);
+    }
+  },
+
   toggleSong() {
     const { isPlaying, unit } = this.data;
     if (isPlaying) {
       clearInterval(this.data.songTimer);
       this.setData({ isPlaying: false, songTimer: null });
+      tts.stop();
     } else {
+      // 开始播放时，先播放当前行
+      const lines = unit.song.lines;
+      if (lines && lines.length > 0) {
+        this.playLyric(lines[this.data.currentLineIndex].text);
+      }
       const timer = setInterval(() => this.nextLine(), 3000);
       this.setData({ isPlaying: true, songTimer: timer });
     }
@@ -133,6 +196,8 @@ Page({
       currentLine: { text: lines[nextIndex].text, zh: lines[nextIndex].zh },
       songProgress: progress,
     });
+    // 播放新行歌词
+    this.playLyric(lines[nextIndex].text);
     if (nextIndex === 0) {
       clearInterval(this.data.songTimer);
       this.setData({ isPlaying: false });
@@ -149,9 +214,13 @@ Page({
       currentLine: { text: lines[prevIndex].text, zh: lines[prevIndex].zh },
       songProgress: Math.round(((prevIndex + 1) / lines.length) * 100),
     });
+    // 播放上一行歌词
+    this.playLyric(lines[prevIndex].text);
   },
 
   songNext() {
+    // 停止当前播放
+    tts.stop();
     this.nextLine();
   },
 
@@ -165,6 +234,48 @@ Page({
       currentLine: { text: lines[idx].text, zh: lines[idx].zh },
       songProgress: Math.round(((idx + 1) / lines.length) * 100),
     });
+    // 播放歌词发音
+    this.playLyric(lines[idx].text);
+  },
+
+  // 获取当前单元的歌曲视频列表
+  _getSongVideos(unit) {
+    if (!unit) return [];
+    const dataModule = require('../../utils/units-data.js');
+    const SONGS_DATA = dataModule.SONGS_DATA;
+    const songData = SONGS_DATA.find(s => s.id === unit.id);
+    return (songData && songData.videos) || [];
+  },
+
+  // 播放歌曲视频
+  playSongVideo(e) {
+    const idx = e.currentTarget.dataset.idx;
+    const video = this.data.songVideos[idx];
+    if (!video) return;
+    
+    const videoUrl = SONGS_VIDEOS_BASE + encodeURIComponent(video.file);
+    console.log('🎬 播放歌曲视频:', videoUrl);
+    
+    this.setData({
+      showVideoPlayer: true,
+      currentVideoUrl: videoUrl,
+      currentVideoTitle: video.title,
+    });
+  },
+
+  // 关闭视频播放器
+  closeVideoPlayer() {
+    this.setData({
+      showVideoPlayer: false,
+      currentVideoUrl: '',
+      currentVideoTitle: '',
+    });
+  },
+
+  // 视频错误处理
+  onVideoError(e) {
+    console.error('❌ 视频加载失败:', e.detail);
+    wx.showToast({ title: '视频加载失败', icon: 'none' });
   },
 
   // ===== 游戏逻辑 =====
@@ -181,6 +292,14 @@ Page({
     this.setData({ gameType: null });
   },
 
+  restartGame() {
+    const { gameType } = this.data;
+    if (gameType === 'memory') this.initMemory();
+    if (gameType === 'quiz') this.initQuiz();
+    if (gameType === 'spelling') this.initSpelling();
+    if (gameType === 'bubble') this.initBubble();
+  },
+
   // ===== Memory Match =====
   initMemory() {
     const { unit } = this.data;
@@ -192,44 +311,118 @@ Page({
     });
     // 打乱
     cards = cards.sort(() => Math.random() - 0.5);
-    this.setData({ memoryCards: cards, moves: 0, flipped: [] });
+    this.setData({ 
+      memoryCards: cards, 
+      memoryMoves: 0, 
+      flipped: [], 
+      memoryMatched: false, 
+      memoryHint: '',
+      showNextRound: false,
+      memoryAllDone: false
+    });
   },
 
   flipCard(e) {
     const idx = e.currentTarget.dataset.idx;
-    const { memoryCards, flipped, moves } = this.data;
+    const { memoryCards, flipped, memoryMoves } = this.data;
     if (flipped.length >= 2) return;
     if (memoryCards[idx].flipped || memoryCards[idx].matched) return;
 
     memoryCards[idx].flipped = true;
     flipped.push({ card: memoryCards[idx], idx });
+    
+    // 播放单词发音
+    tts.speakEnglish(memoryCards[idx].en);
 
     if (flipped.length === 2) {
       const [a, b] = flipped;
-      if (a.card.pair === b.card.pair && a.card.pair !== memoryCards[idx].pair) {
+      // 检查是否匹配（同一对）
+      if (a.card.pair === b.card.pair) {
         memoryCards[a.idx].matched = true;
         memoryCards[b.idx].matched = true;
-        // 检查胜利
-        const allMatched = memoryCards.every(c => c.matched);
+        
+        // 播放配对成功语音提示
+        setTimeout(() => {
+          tts.speakEnglish('Correct');
+        }, 300);
+        
+        // 检查是否全部完成
+        const matchedCount = memoryCards.filter(c => c.matched).length;
+        const totalPairs = memoryCards.length / 2;
+        const allMatched = matchedCount === totalPairs;
+
         if (allMatched) {
+          // 全部完成 - 记录胜利
           this.recordWin();
-          wx.showModal({
-            title: '🎉 Memory Match!',
-            content: `用了 ${moves} 步完成！太棒了！`,
-            showCancel: false,
-            success: () => this.initMemory(),
+          this.setData({
+            memoryCards,
+            flipped: [],
+            memoryMatched: true,
+            memoryMoves: memoryMoves + 1,
+            memoryHint: '🎉 恭喜！用了 ' + (memoryMoves + 1) + ' 步完成！',
+            showNextRound: false,
+            memoryAllDone: true
+          });
+          // 播放胜利音效
+          setTimeout(() => {
+            tts.speakEnglish('Congratulations');
+          }, 800);
+        } else {
+          // 匹配成功，但还没完成 - 显示下一题按钮
+          this.setData({
+            memoryCards,
+            flipped: [],
+            memoryMatched: false,
+            memoryMoves: memoryMoves + 1,
+            memoryHint: '✅ 正确！找到了 ' + matchedCount + '/' + totalPairs + ' 对！',
+            showNextRound: true,
+            memoryAllDone: false
           });
         }
       } else {
+        // 不匹配 - 播放错误提示
+        setTimeout(() => {
+          tts.speakEnglish('Try again');
+        }, 300);
+        
+        this.setData({ 
+          memoryCards,
+          memoryMoves: memoryMoves + 1,
+          flipped: [],
+          memoryHint: '❌ 不对，再试一次！'
+        });
         setTimeout(() => {
           memoryCards[a.idx].flipped = false;
           memoryCards[b.idx].flipped = false;
-          this.setData({ memoryCards });
-        }, 700);
+          this.setData({ memoryCards, flipped: [], memoryHint: '' });
+        }, 1000);
       }
+      return;
     }
 
-    this.setData({ memoryCards, moves: moves + 1, flipped });
+    this.setData({ memoryCards, memoryMoves: memoryMoves + 1, flipped });
+  },
+
+  // 下一题 - 重新开始新的一轮
+  memoryNextRound() {
+    const { unit } = this.data;
+    const vocab = (unit.vocab || []).slice(0, 6);
+    let cards = [];
+    vocab.forEach((v, i) => {
+      cards.push({ ...v, pair: i, flipped: false, matched: false, idx: i * 2 });
+      cards.push({ ...v, pair: i, flipped: false, matched: false, idx: i * 2 + 1 });
+    });
+    // 打乱顺序
+    cards = cards.sort(() => Math.random() - 0.5);
+    this.setData({ 
+      memoryCards: cards, 
+      memoryMoves: 0, 
+      flipped: [], 
+      memoryMatched: false, 
+      memoryHint: '',
+      showNextRound: false,
+      memoryAllDone: false
+    });
   },
 
   // ===== Quiz =====
@@ -250,6 +443,17 @@ Page({
       currentQA: qa,
       qas,
     });
+    // 播放第一题
+    setTimeout(() => this.speakQuizQ(), 300);
+  },
+
+  // 播放 Quiz 题目
+  speakQuizQ() {
+    const { currentQA } = this.data;
+    if (currentQA) {
+      console.log('🎤 播放 Quiz 题目:', currentQA.q.en);
+      tts.speakEnglish(currentQA.q.en);
+    }
   },
 
   selectAnswer(e) {
@@ -257,6 +461,10 @@ Page({
     if (quizAnswered) return;
     const answer = e.currentTarget.dataset.answer;
     const correct = answer === currentQA.a.en;
+    
+    // 播放答案发音
+    tts.speakEnglish(answer);
+    
     this.setData({ quizAnswered: true, quizSelected: answer, quizScore: correct ? quizScore + 1 : quizScore });
 
     setTimeout(() => {
@@ -272,6 +480,8 @@ Page({
           quizAnswered: false,
           quizSelected: '',
         });
+        // 播放下一题
+        setTimeout(() => this.speakQuizQ(), 500);
       } else {
         this.recordWin();
         wx.showModal({
@@ -306,7 +516,9 @@ Page({
   },
 
   speakSpelling() {
-    wx.showToast({ title: this.data.currentWord.en, icon: 'none' });
+    const word = this.data.currentWord.en;
+    wx.showToast({ title: word, icon: 'none', duration: 800 });
+    tts.speakEnglish(word);
   },
 
   checkSpelling() {
@@ -338,37 +550,79 @@ Page({
   // ===== Bubble Pop =====
   initBubble() {
     const { unit } = this.data;
-    const bubble = unit.games && unit.games.bubble;
-    if (!bubble) return;
-    const options = [...bubble.options].sort(() => Math.random() - 0.5);
+    const vocab = unit.vocab || [];
+    if (!vocab.length) return;
+    
+    // 从词汇表中生成多题泡泡题
+    const questions = vocab.slice(0, 6).map(v => {
+      // 从其他词汇中随机选3个作为干扰项
+      const others = vocab.filter(x => x.en !== v.en);
+      const distractors = others.sort(() => Math.random() - 0.5).slice(0, 3);
+      const options = [v, ...distractors].sort(() => Math.random() - 0.5);
+      return {
+        correct: v,
+        options: options,
+      };
+    });
+    
+    const firstQ = questions[0];
     this.setData({
-      bubbleCorrect: bubble.correct,
-      bubbleOptions: options,
+      bubbleQuestions: questions,
+      bubbleIndex: 0,
+      bubbleCorrect: firstQ.correct.en,
+      bubbleOptions: firstQ.options.map(o => o.en),
       bubbleScore: 0,
       bubblePopped: '',
+      bubbleAnswered: false,
     });
   },
 
   popBubble(e) {
-    const { bubblePopped, bubbleCorrect, bubbleScore, bubbleOptions } = this.data;
+    const { bubblePopped, bubbleCorrect, bubbleScore } = this.data;
     if (bubblePopped) return;
     const word = e.currentTarget.dataset.word;
-    this.setData({ bubblePopped: word });
+    
+    // 播放单词发音
+    tts.speakEnglish(word);
+    
+    this.setData({ bubblePopped: word, bubbleAnswered: true });
     if (word === bubbleCorrect) {
+      // 答对：加分，记录胜利
       this.recordWin();
-      const newScore = bubbleScore + 10;
-      const shuffled = [...bubbleOptions].sort(() => Math.random() - 0.5);
-      setTimeout(() => {
-        this.setData({
-          bubbleScore: newScore,
-          bubblePopped: '',
-          bubbleOptions: shuffled,
-        });
-      }, 800);
+      this.setData({ bubbleScore: bubbleScore + 10 });
     } else {
+      // 答错：播放正确答案发音
       setTimeout(() => {
-        this.setData({ bubblePopped: '' });
-      }, 1000);
+        tts.speakEnglish(bubbleCorrect);
+      }, 500);
+    }
+  },
+
+  nextBubble() {
+    const { bubbleQuestions, bubbleIndex, bubbleScore } = this.data;
+    const nextIndex = bubbleIndex + 1;
+    
+    if (nextIndex < bubbleQuestions.length) {
+      // 还有下一题
+      const nextQ = bubbleQuestions[nextIndex];
+      // 打乱选项顺序（转成字符串数组）
+      const shuffledOptions = [...nextQ.options].sort(() => Math.random() - 0.5).map(o => o.en);
+      this.setData({
+        bubbleIndex: nextIndex,
+        bubbleCorrect: nextQ.correct.en,
+        bubbleOptions: shuffledOptions,
+        bubblePopped: '',
+        bubbleAnswered: false,
+      });
+    } else {
+      // 所有题目完成
+      this.recordWin();
+      wx.showModal({
+        title: '🎉 Bubble Pop 完成!',
+        content: `你得到了 ${bubbleScore} 分！太棒了！`,
+        showCancel: false,
+        success: () => this.initBubble(),
+      });
     }
   },
 

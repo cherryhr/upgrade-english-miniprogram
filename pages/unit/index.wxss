@@ -103,6 +103,22 @@
   margin-top: 2rpx;
 }
 
+/* ABC 字母卡片特殊样式 */
+.abc-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.abc-card .vocab-en {
+  font-size: 56rpx;
+  color: white;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.2);
+}
+
+.abc-card .vocab-zh {
+  color: rgba(255,255,255,0.8);
+  font-size: 18rpx;
+}
+
 /* 问答列表 */
 .qa-list {}
 
@@ -226,6 +242,116 @@
   overflow: hidden;
 }
 
+/* 歌曲视频区域 */
+.song-videos-section {
+  margin-bottom: 24rpx;
+}
+
+.song-videos-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #F5C518;
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+}
+
+.song-video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.song-video-item {
+  background: rgba(255,255,255,0.08);
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  transition: transform 0.2s;
+  border: 2rpx solid rgba(255,255,255,0.06);
+}
+
+.song-video-item:active {
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.12);
+}
+
+.sv-icon {
+  font-size: 40rpx;
+  color: #F5C518;
+  flex-shrink: 0;
+}
+
+.sv-info {
+  flex: 1;
+}
+
+.sv-title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4rpx;
+}
+
+.sv-desc {
+  display: block;
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 视频播放器弹窗 */
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-back {
+  color: #F5C518;
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 30rpx;
+  text-align: center;
+}
+
+.video-player-wrap {
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-bottom-info {
+  padding: 24rpx 30rpx;
+  border-radius: 30rpx 30rpx 0 0;
+}
+
+.vi-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 6rpx;
+}
+
+.vi-unit {
+  display: block;
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.7);
+}
+
 .lyric-item {
   display: flex;
   align-items: center;
@@ -325,6 +451,12 @@
   font-weight: 700;
 }
 
+.game-progress {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.6);
+  font-weight: 700;
+}
+
 /* Memory Match */
 .memory-grid {
   display: grid;
@@ -332,22 +464,90 @@
   gap: 12rpx;
 }
 
+/* 匹配提示 */
+.memory-hint {
+  background: linear-gradient(135deg, #00b894, #27AE60);
+  color: white;
+  padding: 16rpx 24rpx;
+  border-radius: 16rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-bottom: 20rpx;
+  animation: pulse 0.5s ease;
+}
+
+/* 成功提示样式 */
+.memory-hint.hint-success {
+  background: linear-gradient(135deg, #00cec9, #0984e3);
+  box-shadow: 0 4rpx 20rpx rgba(0, 206, 201, 0.4);
+}
+
+/* 胜利提示样式 */
+.memory-hint.hint-win {
+  background: linear-gradient(135deg, #fdcb6e, #e17055);
+  box-shadow: 0 4rpx 20rpx rgba(253, 203, 110, 0.5);
+  font-size: 36rpx;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 下一题按钮 */
+.memory-next-btn {
+  background: linear-gradient(135deg, #00b894, #27AE60);
+  color: white;
+  padding: 24rpx 48rpx;
+  border-radius: 50rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-top: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(39, 174, 96, 0.3);
+  animation: pulse 0.5s ease;
+}
+
+/* 重新开始按钮 */
+.memory-restart-btn {
+  background: linear-gradient(135deg, #F5C518, #FF6B6B);
+  color: white;
+  padding: 24rpx 48rpx;
+  border-radius: 50rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-top: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(245, 197, 24, 0.3);
+}
+
+/* 调试信息 */
+.debug-info {
+  background: rgba(255, 200, 0, 0.2);
+  border: 2rpx dashed #F5C518;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  text-align: center;
+  color: #F5C518;
+  font-size: 24rpx;
+  margin-bottom: 20rpx;
+}
+
 .memory-card {
   aspect-ratio: 1;
-  background: white;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 16rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48rpx;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .memory-card.flipped {
-  transform: rotateY(180deg);
   background: white;
 }
 
@@ -363,31 +563,67 @@
   align-items: center;
   justify-content: center;
   border-radius: 16rpx;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 
 .card-front {
-  background: white;
-  color: #333;
-  font-size: 40rpx;
+  color: white;
+  font-size: 48rpx;
+  font-weight: 900;
 }
 
 .card-back {
-  background: white;
-  transform: rotateY(180deg);
+  opacity: 0;
+}
+
+.memory-card.flipped .card-front,
+.memory-card.matched .card-front {
+  opacity: 0;
+}
+
+.memory-card.flipped .card-back,
+.memory-card.matched .card-back {
+  opacity: 1;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx;
+}
+
+.card-emoji {
+  font-size: 56rpx;
+  margin-bottom: 4rpx;
+}
+
+.card-en {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #1B4FD8;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  padding: 0 8rpx;
 }
 
 .card-emoji {
   display: block;
-  font-size: 52rpx;
+  font-size: 56rpx;
+  margin-bottom: 4rpx;
 }
 
 .card-en {
   display: block;
-  font-size: 20rpx;
-  font-weight: 700;
+  font-size: 32rpx;
+  font-weight: 800;
   color: #1B4FD8;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  padding: 0 8rpx;
 }
 
 /* Quiz */
@@ -456,7 +692,7 @@
 
 /* Spelling */
 .spelling-prompt {
-  background: white;
+  background: linear-gradient(135deg, #f093fb, #f5576c);
   border-radius: 20rpx;
   padding: 40rpx;
   text-align: center;
@@ -465,18 +701,19 @@
 
 .spelling-emoji { display: block; font-size: 80rpx; margin-bottom: 12rpx; }
 
-.spelling-zh {
+.spelling-word {
   display: block;
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #1B4FD8;
+  font-size: 42rpx;
+  font-weight: 900;
+  color: white;
   margin-bottom: 8rpx;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.2);
 }
 
 .spelling-hint {
   display: block;
   font-size: 24rpx;
-  color: #999;
+  color: rgba(255,255,255,0.9);
 }
 
 .spelling-input-wrap {
@@ -492,6 +729,7 @@
   padding: 20rpx 24rpx;
   font-size: 28rpx;
   color: #333;
+  text-align: center;
 }
 
 .spelling-check-btn {
@@ -509,9 +747,10 @@
   text-align: center;
   font-size: 28rpx;
   font-weight: 700;
-  color: #F5C518;
   padding: 12rpx;
 }
+
+.spelling-result text { color: #27AE60; }
 
 /* Bubble */
 .bubble-prompt {
@@ -557,6 +796,19 @@
 
 .bubble-item.correct { background: linear-gradient(135deg, #00b894, #27AE60); }
 .bubble-item.wrong { background: linear-gradient(135deg, #d63031, #e74c3c); }
+
+/* 下一题按钮 */
+.bubble-next-btn {
+  background: linear-gradient(135deg, #00b894, #27AE60);
+  color: white;
+  padding: 24rpx 48rpx;
+  border-radius: 50rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-top: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(39, 174, 96, 0.3);
+}
 
 /* 游戏返回按钮 */
 .game-back {

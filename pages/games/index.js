@@ -1,5 +1,5 @@
 // pages/games/index.js
-const { UNITS } = require('../../utils/data.js');
+const { UNITS } = require('../../utils/units-data.js');
 
 Page({
   data: {
@@ -56,6 +56,8 @@ Page({
 
   startGame(e) {
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/unit/index?id=${id}&tab=games&gameType=${this.data.selectedGameType}` });
+    const gameType = this.data.selectedGameType;
+    console.log('🎮 开始游戏:', id, '类型:', gameType);
+    wx.navigateTo({ url: `/pages/unit/index?id=${id}&tab=games&gameType=${gameType}` });
   },
 });
