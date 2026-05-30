@@ -1,0 +1,7 @@
+node_modules
+miniprogram_npm
+.DS_Store
+private.key
+project.private.config.json
+*.log
+*.mp3

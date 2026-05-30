@@ -1,60 +1,114 @@
-<!-- pages/games/index.wxml -->
+<!--pages/games/index.wxml-->
 <view class="page">
-  <view class="header">
-    <view class="header-emoji">🎮</view>
-    <view class="header-title">Super Games!</view>
-    <view class="header-sub">练习游戏 · 游戏中心</view>
-    <view class="header-stats">
-      <text class="stat-item">⭐ {{stars}} 星星</text>
-      <text class="stat-item" wx:if="{{streak > 0}}">🔥 {{streak}}天连续</text>
-    </view>
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">‹</view>
+    <view class="nav-title">{{gameTitle}}</view>
+    <view class="nav-placeholder"></view>
   </view>
 
-  <!-- 快速游戏 -->
-  <view class="section-title">⚡ 选择游戏类型</view>
-  <view class="quick-games">
-    <view class="quick-game" bindtap="chooseUnit" data-type="memory">
-      <text class="qg-emoji">🃏</text>
-      <text class="qg-name">Memory Match</text>
-      <text class="qg-desc">翻牌记忆配对</text>
+  <!-- Memory Match 游戏 -->
+  <view class="game-container" wx:if="{{gameType === 'memory' && isGameStarted}}">
+    <view class="game-info">
+      <text>步数: {{moves}}</text>
+      <text>匹配: {{matchedPairs}} / {{cards.length / 2}}</text>
     </view>
-    <view class="quick-game" bindtap="chooseUnit" data-type="quiz">
-      <text class="qg-emoji">🧠</text>
-      <text class="qg-name">Quiz Time!</text>
-      <text class="qg-desc">知识问答挑战</text>
-    </view>
-    <view class="quick-game" bindtap="chooseUnit" data-type="spelling">
-      <text class="qg-emoji">🐝</text>
-      <text class="qg-name">Spelling Bee</text>
-      <text class="qg-desc">拼写挑战</text>
-    </view>
-    <view class="quick-game" bindtap="chooseUnit" data-type="bubble">
-      <text class="qg-emoji">🫧</text>
-      <text class="qg-name">Bubble Pop</text>
-      <text class="qg-desc">泡泡消消乐</text>
-    </view>
-  </view>
 
-  <!-- 单元选择 -->
-  <view wx:if="{{showUnitPicker}}" class="unit-picker">
-    <view class="picker-header">
-      <text class="picker-back" bindtap="hideUnitPicker">‹ 返回</text>
-      <text class="picker-title">{{gameName}}</text>
-      <text class="picker-spacer"></text>
-    </view>
-    <view class="unit-grid">
-      <view 
-        class="unit-cell" 
-        wx:for="{{units}}" 
-        wx:key="id"
-        bindtap="startGame" 
-        data-id="{{item.id}}"
-        style="border-left: 4rpx solid {{item.color}}"
-      >
-        <text class="unit-cell-emoji">{{item.emoji}}</text>
-        <text class="unit-cell-id">U{{item.id.slice(1)}}</text>
-        <text class="unit-cell-name">{{item.zh}}</text>
+    <view class="memory-grid">
+      <view wx:for="{{cards}}" wx:key="id" 
+            class="memory-card {{item.flipped || item.matched ? 'flipped' : ''}}" 
+            bindtap="onCardTap" data-idx="{{index}}">
+        <view class="card-inner {{item.flipped || item.matched ? 'flipped' : ''}}">
+          <view class="card-front">?</view>
+          <view class="card-back">{{item.text}}</view>
+        </view>
       </view>
+    </view>
+
+    <view class="game-actions" wx:if="{{isGameFinished}}">
+      <button class="action-btn" bindtap="restartMemory">再来一次</button>
+    </view>
+  </view>
+
+  <!-- Quiz Time 游戏 -->
+  <view class="game-container" wx:if="{{gameType === 'quiz' && isGameStarted}}">
+    <view class="game-info">
+      <text>题目: {{currentQuizIndex + 1}} / {{quizTotal}}</text>
+      <text>得分: {{quizScore}}</text>
+    </view>
+
+    <view wx:if="{{!showQuizResult && quizQuestions.length > 0}}">
+      <view class="quiz-question">
+        <text class="question-text">{{quizQuestions[currentQuizIndex].question}}</text>
+        <button class="play-btn" bindtap="showQuizQuestion">🔊 播放</button>
+      </view>
+
+      <view class="quiz-options">
+        <view wx:for="{{quizQuestions[currentQuizIndex].options}}" wx:key="*this" 
+              class="quiz-option" 
+              bindtap="selectQuizAnswer" data-answer="{{item}}">
+          <text>{{item}}</text>
+        </view>
+      </view>
+
+      <button class="next-btn" wx:if="{{isQuizAnswered}}" bindtap="nextQuizQuestion">
+        {{currentQuizIndex + 1 >= quizTotal ? '查看结果' : '下一题'}}
+      </button>
+    </view>
+
+    <view class="result-card" wx:if="{{showQuizResult}}">
+      <text class="result-emoji">🎉</text>
+      <text>测验完成！</text>
+      <text>得分: {{quizScore}} / {{quizTotal}}</text>
+      <button class="action-btn" bindtap="restartQuiz">再来一次</button>
+    </view>
+  </view>
+
+  <!-- Spelling Bee 游戏 -->
+  <view class="game-container" wx:if="{{gameType === 'spelling' && isGameStarted}}">
+    <view class="game-info">
+      <text>单词: {{currentSpellingIndex + 1}} / {{spellingWords.length}}</text>
+      <text>得分: {{spellingScore}}</text>
+    </view>
+
+    <view wx:if="{{!isGameFinished}}">
+      <view class="spelling-area">
+        <button class="play-btn-large" bindtap="playSpellingWord">🔊 听单词</button>
+        
+        <view class="input-area">
+          <input value="{{userInput}}" bindinput="onSpellingInput" placeholder="输入你听到的单词" />
+          <button bindtap="submitSpelling">确认</button>
+        </view>
+
+        <view wx:if="{{showSpellingResult}}" class="spelling-result">
+          <text>{{isSpellingCorrect ? '✅ 正确！' : '❌ 错误'}}</text>
+          <text>正确答案: {{spellingWords[currentSpellingIndex]}}</text>
+          <button bindtap="nextSpellingWord">
+            {{currentSpellingIndex + 1 >= spellingWords.length ? '完成' : '下一个'}}
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <view class="result-card" wx:if="{{isGameFinished}}">
+      <text class="result-emoji">🎉</text>
+      <text>拼写完成！</text>
+      <text>得分: {{spellingScore}} / {{spellingWords.length}}</text>
+      <button class="action-btn" bindtap="restartSpelling">再来一次</button>
+    </view>
+  </view>
+
+  <!-- Bubble Pop 游戏 -->
+  <view class="game-container" wx:if="{{gameType === 'bubble' && isGameStarted}}">
+    <view class="game-info">
+      <text>得分: {{bubbleScore}}</text>
+      <text>时间: {{bubbleTime}}s</text>
+    </view>
+
+    <view class="result-card" wx:if="{{isGameFinished}}">
+      <text class="result-emoji">🎉</text>
+      <text>游戏结束！</text>
+      <text>最终得分: {{bubbleScore}}</text>
+      <button class="action-btn" bindtap="restartBubble">再来一次</button>
     </view>
   </view>
 </view>

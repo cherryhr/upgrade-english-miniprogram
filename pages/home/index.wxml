@@ -39,10 +39,10 @@
     </view>
   </view>
 
-  <!-- 单元学习列表 -->
+  <!-- Level 学习列表 -->
   <view class="section-title">
     <text class="section-icon">📚</text>
-    <text class="section-text">12个单元 · Units 1-12</text>
+    <text class="section-text">5个等级 · Level 1-5</text>
   </view>
 
   <view class="unit-list">

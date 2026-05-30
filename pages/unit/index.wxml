@@ -1,390 +1,127 @@
 <!-- pages/unit/index.wxml -->
-<view class="page">
-  <!-- 顶部返回 -->
+<view class="page" style="background: {{unit.color}}">
+  <!-- 顶部导航 -->
   <view class="nav-bar">
-    <view class="back-btn" bindtap="goBack">‹ 返回</view>
+    <view class="nav-back" bindtap="goBack">‹</view>
     <view class="nav-title">{{unit.emoji}} {{unit.name}}</view>
-    <view class="nav-spacer"></view>
+    <view class="nav-placeholder"></view>
   </view>
 
-  <!-- 标签栏 -->
+  <!-- Tab 切换 -->
   <view class="tab-bar">
-    <view 
-      class="tab-item {{tab === 'vocab' ? 'active' : ''}}" 
-      bindtap="switchTab" data-tab="vocab">📝 词汇</view>
-    <view 
-      class="tab-item {{tab === 'sentences' ? 'active' : ''}}" 
-      bindtap="switchTab" data-tab="sentences">💬 句型</view>
-    <view 
-      class="tab-item {{tab === 'song' ? 'active' : ''}}" 
-      bindtap="switchTab" data-tab="song">🎵 歌曲</view>
-    <view 
-      class="tab-item {{tab === 'games' ? 'active' : ''}}" 
-      bindtap="switchTab" data-tab="games">🎮 游戏</view>
-  </view>
-
-  <!-- 词汇内容 -->
-  <view wx:if="{{tab === 'vocab'}}" class="content">
-    <view class="vocab-grid">
-      <view 
-        class="vocab-card {{item.letter ? 'abc-card' : ''}}" 
-        wx:for="{{displayVocab}}" 
-        wx:key="en"
-        bindtap="speakWord" 
-        data-en="{{item.en}}"
-        data-zh="{{item.zh}}"
-      >
-        <text class="vocab-emoji">{{item.emoji}}</text>
-        <!-- ABC模块显示字母，普通模块显示单词 -->
-        <text class="vocab-en">{{item.letter || item.en}}</text>
-        <text class="vocab-zh">{{item.zh}}</text>
-      </view>
+    <view class="tab-item {{tab === 'phonetic' ? 'active' : ''}}" 
+          bindtap="switchTab" data-tab="phonetic">
+      <text>音标学习</text>
+    </view>
+    <view class="tab-item {{tab === 'review' ? 'active' : ''}}" 
+          bindtap="switchTab" data-tab="review">
+      <text>总复习</text>
+    </view>
+    <view class="tab-item {{tab === 'games' ? 'active' : ''}}" 
+          bindtap="switchTab" data-tab="games">
+      <text>游戏</text>
     </view>
   </view>
 
-  <!-- 句型内容 - 卡通对话场景 -->
-  <view wx:if="{{tab === 'sentences'}}" class="dialogue-scene">
+  <!-- 音标学习 Tab -->
+  <view class="phonetic-tab" wx:if="{{tab === 'phonetic'}}">
+    <!-- 音标规则列表 -->
+    <scroll-view class="phonetic-list" scroll-x>
+      <view class="phonetic-scroll">
+        <view wx:for="{{phoneticList}}" wx:key="index"
+              class="phonetic-chip {{currentPhoneticIndex === index ? 'active' : ''}}"
+              bindtap="selectPhonetic" data-idx="{{index}}">
+          <text class="phonetic-text">{{item.phonetic}}</text>
+        </view>
+      </view>
+    </scroll-view>
 
-    <!-- 场景背景 -->
-    <view class="scene-bg scene-bg-{{unit.id}}">
-      <view class="scene-deco scene-deco-1"></view>
-      <view class="scene-deco scene-deco-2"></view>
-      <view class="scene-deco scene-deco-3"></view>
-    </view>
+    <!-- 当前音标详情 -->
+    <view class="phonetic-detail" wx:if="{{phoneticList.length > 0}}">
+      <view class="phonetic-header" bindtap="speakPhonetic" data-phonetic="{{phoneticList[currentPhoneticIndex].phonetic}}">
+        <text class="phonetic-large">{{phoneticList[currentPhoneticIndex].phonetic}}</text>
+        <text class="phonetic-hint">点击播放音标发音</text>
+      </view>
 
-    <!-- 场景标题 -->
-    <view class="scene-header">
-      <text class="scene-title">{{unit.emoji}} {{unit.name}}</text>
-      <text class="scene-hint">👆 点击 ▶️ 听对话</text>
-    </view>
-
-    <!-- 角色区域 -->
-    <view class="characters-row">
-
-      <!-- Emma 老师 (左侧) -->
-      <view class="character emma {{dialogueSpeaker === 'emma' ? 'speaking' : 'idle'}}">
-        <view class="char-avatar emma-avatar">
-          <view class="emma-hair"></view>
-          <view class="emma-face">
-            <view class="emma-eyes">
-              <view class="eye eye-left {{dialogueSpeaker === 'emma' ? 'eye-happy' : ''}}"></view>
-              <view class="eye eye-right {{dialogueSpeaker === 'emma' ? 'eye-happy' : ''}}"></view>
-            </view>
-            <view class="emma-mouth {{dialogueSpeaker === 'emma' ? 'mouth-smile' : 'mouth-neutral'}}"></view>
-            <view class="emma-glasses"></view>
-          </view>
-          <view class="emma-body"></view>
+      <!-- 单词列表 -->
+      <view class="word-grid">
+        <view wx:for="{{currentWords}}" wx:key="*this"
+              class="word-card"
+              bindtap="speakWord" data-word="{{item}}">
+          <text class="word-text">{{item}}</text>
+          <text class="word-hint">点击发音</text>
         </view>
       </view>
 
-      <!-- 中间气泡区域 -->
-      <view class="bubble-zone">
-        <!-- 问题气泡 (Emma 问) -->
-        <view 
-          class="speech-bubble bubble-q {{dialogueState === 'q' ? 'bubble-in' : 'bubble-hidden'}}"
-          bindtap="playDialogueQ"
-        >
-          <view class="bubble-tail bubble-tail-left"></view>
-          <text class="bubble-en bubble-en-q">{{dialogueQ.en}}</text>
-          <text class="bubble-zh bubble-zh-q">{{dialogueQ.zh}}</text>
-          <text class="bubble-tap-hint">🔊 点击听</text>
-        </view>
-
-        <!-- 回答气泡 (Tommy 答) -->
-        <view 
-          class="speech-bubble bubble-a {{dialogueState === 'a' ? 'bubble-in' : 'bubble-hidden'}}"
-          bindtap="playDialogueA"
-        >
-          <view class="bubble-tail bubble-tail-right"></view>
-          <text class="bubble-en bubble-en-a">{{dialogueA.en}}</text>
-          <text class="bubble-zh bubble-zh-a">{{dialogueA.zh}}</text>
-          <text class="bubble-tap-hint">🔊 点击听</text>
-        </view>
-
-        <!-- 等待提示 -->
-        <view class="waiting-hint {{dialogueState === 'idle' ? 'hint-show' : ''}}">
-          <text class="waiting-text">👆 点击 ▶️ 开始</text>
-        </view>
+      <!-- 播放全部按钮 -->
+      <view class="play-all-btn" bindtap="playAllWords" wx:if="{{!isPlaying}}">
+        <text>🔊 播放全部单词</text>
       </view>
-
-      <!-- Tommy 学生 (右侧) -->
-      <view class="character tommy {{dialogueSpeaker === 'tommy' ? 'speaking' : 'idle'}}">
-        <view class="char-avatar tommy-avatar">
-          <view class="tommy-hair"></view>
-          <view class="tommy-face">
-            <view class="emma-eyes">
-              <view class="eye eye-left {{dialogueSpeaker === 'tommy' ? 'eye-happy' : ''}}"></view>
-              <view class="eye eye-right {{dialogueSpeaker === 'tommy' ? 'eye-happy' : ''}}"></view>
-            </view>
-            <view class="tommy-mouth {{dialogueSpeaker === 'tommy' ? 'mouth-smile' : 'mouth-curious'}}"></view>
-          </view>
-          <view class="tommy-body"></view>
-        </view>
-      </view>
-
-    </view>
-
-    <!-- 进度指示 - 圆点指示器 -->
-    <view class="dialogue-progress">
-      <view class="dp-dots">
-        <view 
-          class="dp-dot {{dialogueIndex === index ? 'active' : ''}}"
-          wx:for="{{unit.sentences}}"
-          wx:key="index"
-        ></view>
-      </view>
-    </view>
-
-    <!-- 句型列表 (横向滑动) -->
-    <view class="dialogue-list">
-      <view 
-        class="dialogue-item {{dialogueIndex === index ? 'active' : ''}} {{item.type === 'standalone' ? 'standalone-item' : ''}}"
-        wx:for="{{unit.sentences}}"
-        wx:key="index"
-        bindtap="selectDialogue"
-        data-index="{{index}}"
-      >
-        <view class="di-q" wx:if="{{item.type === 'qa'}}">{{item.q.en}}</view>
-        <view class="di-a" wx:if="{{item.type === 'qa'}}">{{item.a.en}}</view>
-        <view class="di-standalone" wx:if="{{item.type === 'standalone'}}">{{item.en}}</view>
-      </view>
-    </view>
-
-    <!-- 播放控制 -->
-    <view class="dialogue-controls">
-      <view class="dc-btn dc-prev" bindtap="dialoguePrev">
-        <text>⏮️</text>
-      </view>
-      <view class="dc-btn dc-play" bindtap="playFullDialogue">
-        <text>{{dialoguePlaying ? '⏸️' : '▶️'}}</text>
-      </view>
-      <view class="dc-btn dc-next" bindtap="dialogueNext">
-        <text>⏭️</text>
-      </view>
-    </view>
-
-  </view>
-
-  <!-- 歌曲内容 -->
-  <view wx:if="{{tab === 'song'}}" class="content">
-    <view class="song-card">
-      <view class="song-title">{{unit.song.title}}</view>
-      <view class="song-progress-bar">
-        <view class="song-progress-fill" style="width: {{songProgress}}%"></view>
-      </view>
-      <view class="song-current">{{currentLine.zh}}</view>
-      <view class="song-lyric">{{currentLine.text}}</view>
-      <view class="song-controls">
-        <view class="song-btn" bindtap="songPrev">⏮️</view>
-        <view class="song-play-btn" bindtap="toggleSong">
-          {{isPlaying ? '⏸️ 暂停' : '▶️ 播放'}}
-        </view>
-        <view class="song-btn" bindtap="songNext">⏭️</view>
-      </view>
-    </view>
-
-    <!-- 歌曲视频列表 -->
-    <view class="song-videos-section" wx:if="{{songVideos.length > 0}}">
-      <view class="song-videos-title">🎬 歌曲视频 (点击播放)</view>
-      <view class="song-video-list">
-        <view 
-          class="song-video-item"
-          wx:for="{{songVideos}}"
-          wx:key="file"
-          bindtap="playSongVideo"
-          data-idx="{{index}}"
-        >
-          <text class="sv-icon">▶</text>
-          <view class="sv-info">
-            <text class="sv-title">{{item.title}}</text>
-            <text class="sv-desc">{{item.desc}}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <!-- 歌词列表 -->
-    <view class="lyrics-list">
-      <view 
-        class="lyric-item {{currentLineIndex === index ? 'active' : ''}}"
-        wx:for="{{unit.song.lines}}" 
-        wx:key="index"
-        bindtap="goToLine" data-index="{{index}}"
-      >
-        <text class="lyric-num">{{index + 1}}</text>
-        <view class="lyric-texts">
-          <text class="lyric-en">{{item.text}}</text>
-          <text class="lyric-zh">{{item.zh}}</text>
-        </view>
+      <view class="play-all-btn playing" wx:else>
+        <text>🔊 播放中...</text>
       </view>
     </view>
   </view>
 
-  <!-- 视频播放器弹窗 -->
-  <view class="video-overlay" wx:if="{{showVideoPlayer}}" bindtap="closeVideoPlayer">
-    <view class="video-container" catchtap="">
-      <view class="video-back" bindtap="closeVideoPlayer">← 返回</view>
-      <view class="video-player-wrap">
-        <video 
-          src="{{currentVideoUrl}}"
-          controls
-          autoplay
-          show-center-play-btn
-          show-fullscreen-btn
-          binderror="onVideoError"
-          style="width: 100%; height: 100%"
-        ></video>
+  <!-- 总复习 Tab -->
+  <view class="review-tab" wx:if="{{tab === 'review'}}">
+    <view class="review-header">
+      <text class="review-title">📝 {{unit.name}} 总复习</text>
+      <text class="review-desc">复习本单元所有音标和单词</text>
+    </view>
+
+    <view class="review-content">
+      <view wx:for="{{phoneticList}}" wx:key="index" class="review-section">
+        <view class="review-phonetic" bindtap="speakPhonetic" data-phonetic="{{item.phonetic}}">
+          <text class="review-phonetic-text">{{item.phonetic}}</text>
+        </view>
+        <view class="review-words">
+          <text wx:for="{{item.words}}" wx:key="*this" 
+                class="review-word-tag"
+                bindtap="speakWord" data-word="{{item}}">
+            {{item}}
+          </text>
+        </view>
       </view>
-      <view class="video-bottom-info" style="background: {{unit.color}}">
-        <text class="vi-title">{{currentVideoTitle}}</text>
-        <text class="vi-unit">{{unit.emoji}} {{unit.name}} · {{unit.zh}}</text>
+    </view>
+
+    <view class="review-actions">
+      <view class="action-btn" bindtap="goReview">
+        <text>开始复习测试</text>
       </view>
     </view>
   </view>
 
-  <!-- 游戏内容 -->
-  <view wx:if="{{tab === 'games'}}" class="content">
+  <!-- 游戏 Tab -->
+  <view class="games-tab" wx:if="{{tab === 'games'}}">
+    <view class="games-header">
+      <text class="games-title">🎮 选择游戏</text>
+    </view>
+
     <view class="games-grid">
-      <view class="game-card" bindtap="playGame" data-type="memory">
-        <text class="game-emoji">🃏</text>
-        <text class="game-name">Memory Match</text>
-        <text class="game-desc">翻牌记忆配对</text>
+      <view class="game-card" bindtap="goGame" data-type="memory">
+        <text class="game-icon">🃏</text>
+        <text class="game-name">记忆配对</text>
+        <text class="game-desc">找出匹配的单词</text>
       </view>
-      <view class="game-card" bindtap="playGame" data-type="quiz">
-        <text class="game-emoji">🧠</text>
-        <text class="game-name">Quiz Time!</text>
-        <text class="game-desc">知识问答挑战</text>
+
+      <view class="game-card" bindtap="goGame" data-type="quiz">
+        <text class="game-icon">❓</text>
+        <text class="game-name">选择题</text>
+        <text class="game-desc">选出正确单词</text>
       </view>
-      <view class="game-card" bindtap="playGame" data-type="spelling">
-        <text class="game-emoji">🐝</text>
-        <text class="game-name">Spelling Bee</text>
-        <text class="game-desc">拼写挑战</text>
+
+      <view class="game-card" bindtap="goGame" data-type="spelling">
+        <text class="game-icon">✏️</text>
+        <text class="game-name">拼写游戏</text>
+        <text class="game-desc">听音拼写单词</text>
       </view>
-      <view class="game-card" bindtap="playGame" data-type="bubble">
-        <text class="game-emoji">🫧</text>
-        <text class="game-name">Bubble Pop</text>
-        <text class="game-desc">泡泡消消乐</text>
+
+      <view class="game-card" bindtap="goGame" data-type="bubble">
+        <text class="game-icon">🫧</text>
+        <text class="game-name">泡泡闯关</text>
+        <text class="game-desc">戳破正确泡泡</text>
       </view>
     </view>
-
-    <!-- Memory Match 游戏区 -->
-    <view wx:if="{{gameType === 'memory'}}" class="game-area">
-      <view class="game-header">
-        <text class="game-title">🃏 Memory Match</text>
-        <text class="game-moves">翻牌次数：{{memoryMoves}}</text>
-      </view>
-      <!-- 匹配提示 -->
-      <view class="memory-hint {{memoryHint.indexOf('正确') !== -1 ? 'hint-success' : ''}} {{memoryAllDone ? 'hint-win' : ''}}" wx:if="{{memoryHint}}">
-        <text>{{memoryHint}}</text>
-      </view>
-      <view class="memory-grid">
-        <view 
-          wx:for="{{memoryCards}}" 
-          wx:key="idx"
-          class="memory-card {{item.flipped ? 'flipped' : ''}} {{item.matched ? 'matched' : ''}}"
-          bindtap="flipCard" 
-          data-idx="{{index}}"
-        >
-          <view class="card-front">?</view>
-          <view class="card-back">
-            <view class="card-content">
-              <text class="card-emoji">{{item.emoji}}</text>
-              <text class="card-en">{{item.en}}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-      <!-- 下一轮按钮：配对成功但未全部完成时显示 -->
-      <view class="memory-next-btn" bindtap="memoryNextRound" wx:if="{{showNextRound && !memoryAllDone}}">
-        ✅ 继续下一轮 ▶️ Next Round
-      </view>
-      <!-- 全部完成按钮：游戏结束时显示 -->
-      <view class="memory-restart-btn" bindtap="restartGame" wx:if="{{memoryAllDone}}">
-        🎉 太棒了！再来一局 🔄 Play Again
-      </view>
-    </view>
-
-    <!-- Quiz 游戏区 -->
-    <view wx:if="{{gameType === 'quiz'}}" class="game-area">
-      <view class="game-header">
-        <text class="game-title">🧠 Quiz Time!</text>
-        <text class="game-score">得分：{{quizScore}}/{{quizTotal}}</text>
-      </view>
-      <view class="quiz-card">
-        <view class="quiz-q" bindtap="speakQuizQ">
-          <text class="quiz-icon">{{currentQA.q.icon}}</text>
-          <text class="quiz-en">{{currentQA.q.en}} 🔊</text>
-          <text class="quiz-zh">{{currentQA.q.zh}}</text>
-        </view>
-        <view class="quiz-options">
-          <view 
-            wx:for="{{quizOptions}}" 
-            wx:key="index"
-            class="quiz-option {{quizAnswered ? (item === currentQA.a.en ? 'correct' : (item === quizSelected ? 'wrong' : 'disabled')) : ''}}"
-            bindtap="selectAnswer" 
-            data-answer="{{item}}"
-          >{{item}}</view>
-        </view>
-      </view>
-    </view>
-
-    <!-- Spelling 游戏区 -->
-    <view wx:if="{{gameType === 'spelling'}}" class="game-area">
-      <view class="game-header">
-        <text class="game-title">🐝 Spelling Bee</text>
-        <text class="game-progress">{{spellingIndex + 1}}/{{spellingWords.length}}</text>
-      </view>
-      <view class="spelling-prompt" bindtap="speakSpelling">
-        <text class="spelling-emoji">{{currentWord.emoji}}</text>
-        <text class="spelling-word">{{currentWord.en}}</text>
-        <text class="spelling-hint">🔊 点击听发音</text>
-      </view>
-      <view class="spelling-input-wrap">
-        <input 
-          class="spelling-input" 
-          value="{{spellingInput}}"
-          bindinput="onSpellingInput"
-          placeholder="Type the English word..."
-          disabled="{{spellingDone}}"
-        />
-        <view class="spelling-check-btn" bindtap="checkSpelling">Check</view>
-      </view>
-      <view class="spelling-result" wx:if="{{spellingResult !== null}}">
-        <text wx:if="{{spellingResult}}">🎉 Correct! {{currentWord.en}}</text>
-        <text wx:else>❌ Answer: {{currentWord.en}}</text>
-      </view>
-    </view>
-
-    <!-- Bubble 游戏区 -->
-    <view wx:if="{{gameType === 'bubble'}}" class="game-area">
-      <view class="game-header">
-        <text class="game-title">🫧 Bubble Pop</text>
-        <text class="game-score">{{bubbleScore}} 分</text>
-      </view>
-      <view class="game-header">
-        <text class="game-progress">第 {{bubbleIndex + 1}}/{{bubbleQuestions.length}} 题</text>
-      </view>
-      <view class="bubble-prompt">
-        <text class="bubble-task">Pop the correct answer:</text>
-        <text class="bubble-word">{{bubbleCorrect}}</text>
-      </view>
-      <view class="bubble-grid">
-        <view 
-          wx:for="{{bubbleOptions}}" 
-          wx:key="index"
-          class="bubble-item {{item === bubbleCorrect && bubblePopped ? 'correct' : ''}} {{item === bubblePopped && item !== bubbleCorrect ? 'wrong' : ''}}"
-          bindtap="popBubble" 
-          data-word="{{item}}"
-        >{{item}}</view>
-      </view>
-      <!-- 下一题按钮：答对或答错后都显示 -->
-      <view class="bubble-next-btn" bindtap="nextBubble" wx:if="{{bubblePopped !== ''}}">
-        {{bubblePopped === bubbleCorrect ? '🎉 Correct! ' : '❌ Answer: ' + bubbleCorrect}} ▶️ {{bubbleIndex + 1 >= bubbleQuestions.length ? 'Finish' : 'Next Question'}}
-      </view>
-    </view>
-
   </view>
-
-  <!-- 底部间距 -->
-  <view style="height: 40rpx"></view>
 </view>

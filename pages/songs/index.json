@@ -1,5 +1,8 @@
 {
   "navigationBarTitleText": "🎵 Songs · 歌曲视频",
   "navigationBarBackgroundColor": "#ff6b35",
-  "navigationBarTextStyle": "white"
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "txv-video": "plugin://tencentvideo/video"
+  }
 }

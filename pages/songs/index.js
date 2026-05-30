@@ -17,9 +17,6 @@ Page({
   data: {
     songs: SONGS_DATA,
     totalVideos: 0,
-    playing: false,
-    currentVideo: null,
-    currentUnit: null
   },
 
   onLoad() {
@@ -35,33 +32,27 @@ Page({
     const song = this.data.songs[unitIdx];
     const video = song.videos[videoIdx];
     
-    // 构建完整的视频URL
     const videoUrl = VIDEO_BASE + encodeURIComponent(video.file);
     
-    this.setData({
-      playing: true,
-      currentVideo: { ...video, url: videoUrl },
-      currentUnit: song
+    // 使用微信原生 API 全屏播放，无需 <video> 组件，规避文娱资质
+    wx.previewMedia({
+      sources: [{
+        url: videoUrl,
+        type: 'video'
+      }],
+      success: () => {
+        console.log('视频播放成功:', video.title);
+      },
+      fail: (err) => {
+        console.error('视频播放失败:', err);
+        wx.showToast({ title: '播放失败', icon: 'none' });
+      }
     });
   },
 
   closePlayer() {
-    this.setData({
-      playing: false,
-      currentVideo: null,
-      currentUnit: null
-    });
+    // previewMedia 由系统控制关闭，无需手动处理
   },
 
-  videoError(e) {
-    console.error('视频加载失败:', e.detail);
-    wx.showToast({
-      title: '视频加载失败',
-      icon: 'none'
-    });
-  },
-
-  onUnload() {
-    this.setData({ playing: false });
-  }
+  onUnload() {}
 });

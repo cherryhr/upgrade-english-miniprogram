@@ -9,14 +9,12 @@ Page({
   },
 
   onLoad() {
-    // 加载星星和连续天数
     const stars = wx.getStorageSync('stars') || 0;
     const streak = wx.getStorageSync('streak') || 0;
     this.setData({ stars, streak });
   },
 
   onShow() {
-    // 更新星星显示
     const stars = wx.getStorageSync('stars') || 0;
     const streak = wx.getStorageSync('streak') || 0;
     this.setData({ stars, streak });
@@ -25,11 +23,6 @@ Page({
   goUnit(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/unit/index?id=${id}` });
-  },
-
-  goModule(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/unit/index?id=${id}&module=abc` });
   },
 
   goSongs() {

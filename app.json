@@ -48,5 +48,11 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "plugins": {
+    "tencentvideo": {
+      "version": "1.4.6",
+      "provider": "wxa75efa648b60994b"
+    }
+  }
 }

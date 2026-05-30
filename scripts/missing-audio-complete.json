@@ -1,0 +1,512 @@
+[
+  {
+    "text": "Hello! What is your name?",
+    "file": "hello_what_is_your_name.mp3",
+    "unit": "u1",
+    "type": "question"
+  },
+  {
+    "text": "Hi! My name is Amy. Nice to meet you!",
+    "file": "hi_my_name_is_amy_nice_to_meet_you.mp3",
+    "unit": "u1",
+    "type": "answer"
+  },
+  {
+    "text": "I'm fine, thank you! And you?",
+    "file": "i_am.mp3",
+    "unit": "u1",
+    "type": "answer"
+  },
+  {
+    "text": "Good morning, Miss Wang! How are you?",
+    "file": "good_morning_miss_wang_how_are_you.mp3",
+    "unit": "u1",
+    "type": "question"
+  },
+  {
+    "text": "Good morning! I'm very well, thank you!",
+    "file": "ood.mp3",
+    "unit": "u1",
+    "type": "answer"
+  },
+  {
+    "text": "Goodbye! See you tomorrow!",
+    "file": "oodbye.mp3",
+    "unit": "u1",
+    "type": "question"
+  },
+  {
+    "text": "Bye bye! Have a good day!",
+    "file": "ye.mp3",
+    "unit": "u1",
+    "type": "answer"
+  },
+  {
+    "text": "Hello, hello, hello",
+    "file": "ello.mp3",
+    "unit": "u1",
+    "type": "lyric"
+  },
+  {
+    "text": "Hip hip hooray",
+    "file": "ip.mp3",
+    "unit": "u1",
+    "type": "lyric"
+  },
+  {
+    "text": "Open your book",
+    "file": "open_your_book.mp3",
+    "unit": "u2",
+    "type": "vocab"
+  },
+  {
+    "text": "Close your book",
+    "file": "close_your_book.mp3",
+    "unit": "u2",
+    "type": "vocab"
+  },
+  {
+    "text": "Can you sit down, please?",
+    "file": "can_you_sit_down_please.mp3",
+    "unit": "u2",
+    "type": "question"
+  },
+  {
+    "text": "Yes, Miss! I am sitting down now.",
+    "file": "es.mp3",
+    "unit": "u2",
+    "type": "answer"
+  },
+  {
+    "text": "Please stand up! Are you ready?",
+    "file": "please_stand_up_are_you_ready.mp3",
+    "unit": "u2",
+    "type": "question"
+  },
+  {
+    "text": "Who knows the answer? Hands up!",
+    "file": "ho.mp3",
+    "unit": "u2",
+    "type": "question"
+  },
+  {
+    "text": "Listen carefully and repeat after me.",
+    "file": "isten.mp3",
+    "unit": "u2",
+    "type": "question"
+  },
+  {
+    "text": "Sit down, sit down",
+    "file": "it.mp3",
+    "unit": "u2",
+    "type": "lyric"
+  },
+  {
+    "text": "Stand up, stand up",
+    "file": "tand.mp3",
+    "unit": "u2",
+    "type": "lyric"
+  },
+  {
+    "text": "Hands up, hands up",
+    "file": "ands.mp3",
+    "unit": "u2",
+    "type": "lyric"
+  },
+  {
+    "text": "My name is Lily. What about you?",
+    "file": "my_name_is.mp3",
+    "unit": "u3",
+    "type": "answer"
+  },
+  {
+    "text": "I'm five years old. How old are you?",
+    "file": "im_five_years_old.mp3",
+    "unit": "u3",
+    "type": "answer"
+  },
+  {
+    "text": "Do you want to be my friend?",
+    "file": "do_you_want_to_be_friends.mp3",
+    "unit": "u3",
+    "type": "question"
+  },
+  {
+    "text": "What is your name? What is your name?",
+    "file": "what_is_your_name.mp3",
+    "unit": "u3",
+    "type": "lyric"
+  },
+  {
+    "text": "It's my birthday today! I'm so excited!",
+    "file": "ts.mp3",
+    "unit": "u4",
+    "type": "answer"
+  },
+  {
+    "text": "How are you today? How are you?",
+    "file": "ow.mp3",
+    "unit": "u4",
+    "type": "lyric"
+  },
+  {
+    "text": "What colour is this apple?",
+    "file": "what_colour_is_the_apple.mp3",
+    "unit": "u5",
+    "type": "question"
+  },
+  {
+    "text": "Can you see a rainbow? How many colours?",
+    "file": "how_many_colours_can_you_say.mp3",
+    "unit": "u5",
+    "type": "question"
+  },
+  {
+    "text": "Red, red, red",
+    "file": "ed.mp3",
+    "unit": "u5",
+    "type": "lyric"
+  },
+  {
+    "text": "Blue, blue, blue",
+    "file": "lue.mp3",
+    "unit": "u5",
+    "type": "lyric"
+  },
+  {
+    "text": "Yellow, yellow, yellow",
+    "file": "ellow.mp3",
+    "unit": "u5",
+    "type": "lyric"
+  },
+  {
+    "text": "Green, green, green",
+    "file": "reen.mp3",
+    "unit": "u5",
+    "type": "lyric"
+  },
+  {
+    "text": "Rainbow colours, so beautiful",
+    "file": "ainbow.mp3",
+    "unit": "u5",
+    "type": "lyric"
+  },
+  {
+    "text": "Can you count to ten?",
+    "file": "can_you_count_to_ten.mp3",
+    "unit": "u6",
+    "type": "question"
+  },
+  {
+    "text": "How many apples are on the table?",
+    "file": "how_many_apples_are_on_the_table.mp3",
+    "unit": "u6",
+    "type": "question"
+  },
+  {
+    "text": "There are five apples on the table!",
+    "file": "there_are.mp3",
+    "unit": "u6",
+    "type": "answer"
+  },
+  {
+    "text": "How old are you? How many candles?",
+    "file": "how_old_are_you_how_many_candles.mp3",
+    "unit": "u6",
+    "type": "question"
+  },
+  {
+    "text": "One, two, three, four, five",
+    "file": "ne.mp3",
+    "unit": "u6",
+    "type": "lyric"
+  },
+  {
+    "text": "Once I caught a fish alive",
+    "file": "nce.mp3",
+    "unit": "u6",
+    "type": "lyric"
+  },
+  {
+    "text": "Six, seven, eight, nine, ten",
+    "file": "ix.mp3",
+    "unit": "u6",
+    "type": "lyric"
+  },
+  {
+    "text": "Then I let it go again",
+    "file": "hen.mp3",
+    "unit": "u6",
+    "type": "lyric"
+  },
+  {
+    "text": "What animal is this? It says meow!",
+    "file": "what_animal_is_this.mp3",
+    "unit": "u7",
+    "type": "question"
+  },
+  {
+    "text": "The elephant is very big! It's the biggest land animal!",
+    "file": "he.mp3",
+    "unit": "u7",
+    "type": "answer"
+  },
+  {
+    "text": "Animals, animals, we love you",
+    "file": "nimals.mp3",
+    "unit": "u7",
+    "type": "lyric"
+  },
+  {
+    "text": "This is my family! Mum, Dad, and me!",
+    "file": "his.mp3",
+    "unit": "u8",
+    "type": "answer"
+  },
+  {
+    "text": "Mum and Dad and me",
+    "file": "um.mp3",
+    "unit": "u8",
+    "type": "lyric"
+  },
+  {
+    "text": "Happy, happy family",
+    "file": "appy.mp3",
+    "unit": "u8",
+    "type": "lyric"
+  },
+  {
+    "text": "Here is my nose! Right here in the middle of my face!",
+    "file": "ere.mp3",
+    "unit": "u9",
+    "type": "answer"
+  },
+  {
+    "text": "What can you do with your hands?",
+    "file": "hat.mp3",
+    "unit": "u9",
+    "type": "question"
+  },
+  {
+    "text": "Head, shoulders, knees and toes",
+    "file": "ead.mp3",
+    "unit": "u9",
+    "type": "lyric"
+  },
+  {
+    "text": "Knees and toes",
+    "file": "nees.mp3",
+    "unit": "u9",
+    "type": "lyric"
+  },
+  {
+    "text": "Do you like carrots?",
+    "file": "do_you_like_apples.mp3",
+    "unit": "u10",
+    "type": "question"
+  },
+  {
+    "text": "Does the cake taste good?",
+    "file": "oes.mp3",
+    "unit": "u10",
+    "type": "question"
+  },
+  {
+    "text": "Apples, apples, so red and sweet",
+    "file": "pples.mp3",
+    "unit": "u10",
+    "type": "lyric"
+  },
+  {
+    "text": "Bananas, bananas, so yellow and neat",
+    "file": "ananas.mp3",
+    "unit": "u10",
+    "type": "lyric"
+  },
+  {
+    "text": "Pizza, pizza, so yummy to eat",
+    "file": "izza.mp3",
+    "unit": "u10",
+    "type": "lyric"
+  },
+  {
+    "text": "Do you want to play ball with me?",
+    "file": "do_you_want_some_milk.mp3",
+    "unit": "u11",
+    "type": "question"
+  },
+  {
+    "text": "A bouncy ball bouncing at me",
+    "file": "bouncy.mp3",
+    "unit": "u11",
+    "type": "lyric"
+  },
+  {
+    "text": "A teddy bear soft as can be",
+    "file": "teddy.mp3",
+    "unit": "u11",
+    "type": "lyric"
+  },
+  {
+    "text": "A little toy car, zoom zoom zoom",
+    "file": "little.mp3",
+    "unit": "u11",
+    "type": "lyric"
+  },
+  {
+    "text": "Can you sing a song for us?",
+    "file": "an.mp3",
+    "unit": "u12",
+    "type": "question"
+  },
+  {
+    "text": "I learned greetings, colours, numbers, animals and more!",
+    "file": "i_learned_greetings_colours_numbers_and_more.mp3",
+    "unit": "u12",
+    "type": "answer"
+  },
+  {
+    "text": "A - Apple",
+    "file": "pple.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "B - Ball",
+    "file": "all.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "C - Cat",
+    "file": "at.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "D - Dog",
+    "file": "og.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "E - Egg",
+    "file": "gg.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "F - Fish",
+    "file": "ish.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "G - Grape",
+    "file": "rape.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "I - Ice cream",
+    "file": "ce.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "J - Juice",
+    "file": "uice.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "K - Kite",
+    "file": "ite.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "L - Lion",
+    "file": "ion.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "M - Moon",
+    "file": "oon.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "N - Nest",
+    "file": "est.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "O - Orange",
+    "file": "range.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "P - Pig",
+    "file": "ig.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "Q - Queen",
+    "file": "ueen.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "S - Star",
+    "file": "tar.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "T - Tiger",
+    "file": "iger.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "U - Umbrella",
+    "file": "mbrella.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "V - Violin",
+    "file": "iolin.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "W - Whale",
+    "file": "hale.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "X - Xylophone",
+    "file": "ylophone.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "Y - Yo-yo",
+    "file": "oyo.mp3",
+    "unit": "abc",
+    "type": "letter"
+  },
+  {
+    "text": "Z - Zebra",
+    "file": "ebra.mp3",
+    "unit": "abc",
+    "type": "letter"
+  }
+]

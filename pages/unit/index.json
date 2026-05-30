@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "txv-video": "plugin://tencentvideo/video"
+  },
   "navigationBarTitleText": "单元学习",
   "navigationBarBackgroundColor": "#0a1628",
   "navigationBarTextStyle": "white",

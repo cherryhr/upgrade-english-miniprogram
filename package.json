@@ -8,5 +8,8 @@
   },
   "dependencies": {
     "miniprogram-ci": "^2.1.32"
+  },
+  "devDependencies": {
+    "acorn": "^8.16.0"
   }
 }
