@@ -1,5 +1,5 @@
 // pages/home/index.js
-const { UNITS } = require('../../utils/units-data.js');
+const { UNITS } = require('../../utils/data.js');
 
 Page({
   data: {
