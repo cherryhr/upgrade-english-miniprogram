@@ -1,5 +1,5 @@
 // pages/games/index.js - 简化版游戏页面
-const { UNITS } = require('../../utils/units-data.js');
+const { UNITS } = require('../../utils/data.js');
 const tts = require('../../utils/tts.js');
 
 Page({
